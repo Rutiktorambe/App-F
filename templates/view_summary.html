@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Weekly Summary</title>
+  </head>
+  <body>
+    <h1>Weekly Summary</h1>
+
+    <form action="{{ url_for('view_summary') }}" method="get">
+      <input type="date" name="date" value="{{ start_date }}" required />
+      <button type="submit">Show Week</button>
+    </form>
+
+    <a href="{{ url_for('previous_week', start_date=start_date) }}"
+      >Previous Week</a
+    >
+    <a href="{{ url_for('next_week', start_date=start_date) }}">Next Week</a>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Admin</th>
+          <th>Billable</th>
+          <th>Non-billable</th>
+          <th>Total Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if summary.dates %} {% for date, details in summary.dates.items() %}
+        <tr>
+          <td>{{ date }}</td>
+          <td>{{ details.admin | default(0) }}</td>
+          <td>{{ details.billable | default(0) }}</td>
+          <td>{{ details['non-billable'] | default(0) }}</td>
+          <td>{{ details.total_time | default(0) }}</td>
+        </tr>
+        {% endfor %} {% else %}
+        <tr>
+          <td colspan="5">No entries found for this week.</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </body>
+</html>

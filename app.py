@@ -118,13 +118,6 @@ def fill_timesheet():
 
 
 
-
-# Route for View Summary (example)
-@app.route('/view_summary')
-@login_required
-def view_summary():
-    return "View Summary Page"
-
 # Route for Manage Repotree (example)
 @app.route('/manage_repotree')
 @login_required
@@ -158,20 +151,15 @@ def success():
     return render_template('success.html')  # Create a success.html template
 
 
-
-from flask import request, jsonify
-from datetime import datetime, timedelta
-from flask_login import login_required, current_user
-
-@app.route('/weekly_summary', methods=['GET'])
+@app.route('/view_summary', methods=['GET'])
 @login_required
-def weekly_summary():
-    # Get the start_date from query parameters or use current week's Monday as default
-    start_date_str = request.args.get('start_date')
-    start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=datetime.now().weekday())
+def view_summary():
+    selected_date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
+    current_date = datetime.strptime(selected_date, '%Y-%m-%d')
+
+    start_date = current_date - timedelta(days=current_date.weekday())
     end_date = start_date + timedelta(days=6)
 
-    # Initialize the summary dictionary
     summary = {
         "dates": {f"{(start_date + timedelta(days=i)).strftime('%Y-%m-%d')}": {} for i in range(7)},
         "totals": {
@@ -182,7 +170,6 @@ def weekly_summary():
         }
     }
 
-    # Fetch data from the database
     try:
         conn = get_db_connection()
         entries = conn.execute(
@@ -190,6 +177,8 @@ def weekly_summary():
             (start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'), current_user.id)
         ).fetchall()
         conn.close()
+
+        print("Entries fetched:", entries)  # Debugging line
 
         # Process each entry
         for entry in entries:
@@ -208,10 +197,28 @@ def weekly_summary():
 
     except Exception as e:
         print("An error occurred:", str(e))
-        return jsonify({"error": "An error occurred while generating the summary."})
+        flash("An error occurred while generating the summary.", 'error')
+        return redirect(url_for('home'))
 
-    return jsonify(summary)
+    return render_template('view_summary.html', summary=summary, start_date=start_date.strftime('%Y-%m-%d'))
 
+
+
+@app.route('/view_summary/next_week', methods=['GET'])
+@login_required
+def next_week():
+    # Redirect to the view_summary route with the date for the next week
+    current_date = request.args.get('start_date')
+    next_date = datetime.strptime(current_date, '%Y-%m-%d') + timedelta(weeks=1)
+    return redirect(url_for('view_summary', date=next_date.strftime('%Y-%m-%d')))
+
+@app.route('/view_summary/previous_week', methods=['GET'])
+@login_required
+def previous_week():
+    # Redirect to the view_summary route with the date for the previous week
+    current_date = request.args.get('start_date')
+    previous_date = datetime.strptime(current_date, '%Y-%m-%d') - timedelta(weeks=1)
+    return redirect(url_for('view_summary', date=previous_date.strftime('%Y-%m-%d')))
 
 
 
