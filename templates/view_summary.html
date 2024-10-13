@@ -23,6 +23,8 @@
           <th>Date</th>
           <th>Admin</th>
           <th>Billable</th>
+          <th>Training</th>
+          <!-- New Training Column -->
           <th>Non-billable</th>
           <th>Total Time</th>
         </tr>
@@ -33,12 +35,18 @@
           <td>{{ date }}</td>
           <td>{{ details.admin | default(0) }}</td>
           <td>{{ details.billable | default(0) }}</td>
-          <td>{{ details['non-billable'] | default(0) }}</td>
+          <td>{{ details.training | default(0) }}</td>
+          <!-- Training Time Display -->
+          <td>
+            {{ details['non-billable'] | default(0) + details.training |
+            default(0) }}
+          </td>
+          <!-- Non-billable Time Calculation -->
           <td>{{ details.total_time | default(0) }}</td>
         </tr>
         {% endfor %} {% else %}
         <tr>
-          <td colspan="5">No entries found for this week.</td>
+          <td colspan="6">No entries found for this week.</td>
         </tr>
         {% endif %}
       </tbody>
