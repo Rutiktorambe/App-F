@@ -42,3 +42,9 @@ SELECT \* FROM table_name;
 Exit SQLite:
 
 Type .exit to leave the SQLite command line interface.
+
+value="{{ current_user.id }}"
+value="{{ current_user.fname }}"
+value="{{ current_user.lname }}"
+value="{{ current_user.team }}"
+value="{{ current_user.managername }}"

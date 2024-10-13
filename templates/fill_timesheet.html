@@ -6,28 +6,47 @@
     <title>Fill Timesheet</title>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
     />
     <style>
       .error {
         color: red;
       }
+      .selected-dates {
+        margin-top: 10px;
+      }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
       $(function () {
-        // Initialize datepicker for multiple date selection
-        $("#datepicker").datepicker({
-          dateFormat: "yy-mm-dd",
-          beforeShowDay: $.datepicker.noWeekends,
-          onSelect: function (dateText) {
-            // Add selected date to hidden input
-            let selectedDates = $("#dates").val().split(",").filter(Boolean);
-            if (!selectedDates.includes(dateText)) {
-              selectedDates.push(dateText);
+        // Initialize Flatpickr for multiple date selection with past dates only
+        const datesInput = $("#dates");
+        const selectedDatesDisplay = $("#selected_dates");
+
+        flatpickr("#datepicker", {
+          mode: "multiple", // Enable multiple date selection
+          dateFormat: "Y-m-d",
+          maxDate: "today", // Prevent future date selection
+          onChange: function (selectedDates) {
+            // Update the hidden input with selected dates
+            datesInput.val(
+              selectedDates
+                .map((date) => date.toISOString().split("T")[0])
+                .join(",")
+            );
+
+            // Display selected dates
+            selectedDatesDisplay.empty();
+            if (selectedDates.length > 0) {
+              selectedDates.forEach(function (date) {
+                selectedDatesDisplay.append(
+                  `<span>${date.toISOString().split("T")[0]}</span>, `
+                );
+              });
+            } else {
+              selectedDatesDisplay.text("No dates selected.");
             }
-            $("#dates").val(selectedDates.join(","));
           },
         });
 
@@ -53,6 +72,17 @@
               '<option value="training">Training</option>'
             );
           }
+
+          // Dummy values for Category 3
+          $("#category_3").append(
+            '<option value="dummy_1">Dummy Value 1</option>'
+          );
+          $("#category_3").append(
+            '<option value="dummy_2">Dummy Value 2</option>'
+          );
+          $("#category_3").append(
+            '<option value="dummy_3">Dummy Value 3</option>'
+          );
         });
 
         // Populate category 2 based on category 1 selection
@@ -72,10 +102,114 @@
             $("#category_2").append(
               '<option value="admin_option2">Admin Option 2</option>'
             );
+            $("#category_2").append(
+              '<option value="admin_option3">Admin Option 3</option>'
+            );
+            $("#category_2").append(
+              '<option value="admin_option4">Admin Option 4</option>'
+            );
+            $("#category_2").append(
+              '<option value="admin_option5">Admin Option 5</option>'
+            );
+
+            // Adding options to Category 3 based on Category 2 selection
+            $("#category_2").change(function () {
+              const selectedAdminOption = $(this).val();
+              $("#category_3")
+                .empty()
+                .append('<option value="">Select Category 3</option>');
+
+              if (selectedAdminOption === "admin_option1") {
+                $("#category_3").append(
+                  '<option value="admin_option1_cat3_1">Option 1 Cat 3</option>'
+                );
+                $("#category_3").append(
+                  '<option value="admin_option1_cat3_2">Option 2 Cat 3</option>'
+                );
+                $("#category_3").append(
+                  '<option value="admin_option1_cat3_3">Option 3 Cat 3</option>'
+                );
+              } else if (selectedAdminOption === "admin_option2") {
+                $("#category_3").append(
+                  '<option value="admin_option2_cat3_1">Option 1 Cat 3</option>'
+                );
+                $("#category_3").append(
+                  '<option value="admin_option2_cat3_2">Option 2 Cat 3</option>'
+                );
+                $("#category_3").append(
+                  '<option value="admin_option2_cat3_3">Option 3 Cat 3</option>'
+                );
+              } else if (selectedAdminOption === "admin_option3") {
+                $("#category_3").append(
+                  '<option value="admin_option3_cat3_1">Option 1 Cat 3</option>'
+                );
+                $("#category_3").append(
+                  '<option value="admin_option3_cat3_2">Option 2 Cat 3</option>'
+                );
+                $("#category_3").append(
+                  '<option value="admin_option3_cat3_3">Option 3 Cat 3</option>'
+                );
+              } else if (selectedAdminOption === "admin_option4") {
+                $("#category_3").append(
+                  '<option value="admin_option4_cat3_1">Option 1 Cat 3</option>'
+                );
+                $("#category_3").append(
+                  '<option value="admin_option4_cat3_2">Option 2 Cat 3</option>'
+                );
+                $("#category_3").append(
+                  '<option value="admin_option4_cat3_3">Option 3 Cat 3</option>'
+                );
+              } else if (selectedAdminOption === "admin_option5") {
+                $("#category_3").append(
+                  '<option value="admin_option5_cat3_1">Option 1 Cat 3</option>'
+                );
+                $("#category_3").append(
+                  '<option value="admin_option5_cat3_2">Option 2 Cat 3</option>'
+                );
+                $("#category_3").append(
+                  '<option value="admin_option5_cat3_3">Option 3 Cat 3</option>'
+                );
+              }
+            });
           } else if (selectedCategory === "training") {
             $("#category_2").append(
               '<option value="training_option1">Training Option 1</option>'
             );
+            $("#category_2").append(
+              '<option value="training_option2">Training Option 2</option>'
+            );
+            $("#category_2").append(
+              '<option value="training_option3">Training Option 3</option>'
+            );
+            $("#category_2").append(
+              '<option value="training_option4">Training Option 4</option>'
+            );
+
+            // Adding options to Category 3 based on Category 2 selection
+            $("#category_2").change(function () {
+              const selectedTrainingOption = $(this).val();
+              $("#category_3")
+                .empty()
+                .append('<option value="">Select Category 3</option>');
+
+              if (selectedTrainingOption === "training_option1") {
+                $("#category_3").append(
+                  '<option value="training_option1_cat3_1">Training 1 Cat 3 Option 1</option>'
+                );
+              } else if (selectedTrainingOption === "training_option2") {
+                $("#category_3").append(
+                  '<option value="training_option2_cat3_1">Training 2 Cat 3 Option 1</option>'
+                );
+              } else if (selectedTrainingOption === "training_option3") {
+                $("#category_3").append(
+                  '<option value="training_option3_cat3_1">Training 3 Cat 3 Option 1</option>'
+                );
+              } else if (selectedTrainingOption === "training_option4") {
+                $("#category_3").append(
+                  '<option value="training_option4_cat3_1">Training 4 Cat 3 Option 1</option>'
+                );
+              }
+            });
           }
         });
       });
@@ -85,39 +219,85 @@
     <h1>Fill Timesheet</h1>
     <form method="POST" action="/fill_timesheet">
       <label for="employee_id">Employee ID:</label>
-      <input type="text" id="employee_id" name="employee_id" required /><br />
+      <input
+        type="text"
+        id="employee_id"
+        name="employee_id"
+        value="{{ current_user.id }}"
+        readonly
+      /><br />
 
       <label for="fname">First Name:</label>
-      <input type="text" id="fname" name="fname" required /><br />
+      <input
+        type="text"
+        id="fname"
+        name="fname"
+        value="{{ current_user.fname }}"
+        readonly
+      /><br />
 
       <label for="lname">Last Name:</label>
-      <input type="text" id="lname" name="lname" required /><br />
+      <input
+        type="text"
+        id="lname"
+        name="lname"
+        value="{{ current_user.lname }}"
+        readonly
+      /><br />
 
       <label for="team">Team:</label>
-      <input type="text" id="team" name="team" required /><br />
+      <input
+        type="text"
+        id="team"
+        name="team"
+        value="{{ current_user.team }}"
+        readonly
+      /><br />
 
       <label for="manager_name">Manager Name:</label>
-      <input type="text" id="manager_name" name="manager_name" required /><br />
+      <input
+        type="text"
+        id="manager_name"
+        name="manager_name"
+        value="{{ current_user.managername }}"
+        readonly
+      /><br />
 
       <label for="datepicker">Select Dates:</label>
       <input type="text" id="datepicker" readonly /><br />
       <input type="hidden" id="dates" name="dates" value="" /><br />
 
+      <div class="selected-dates">
+        <strong>Selected Dates:</strong>
+        <span id="selected_dates">No dates selected.</span>
+      </div>
+
       <label for="duration_hours">Duration Hours:</label>
-      <input
-        type="number"
-        id="duration_hours"
-        name="duration_hours"
-        required
-      /><br />
+      <select id="duration_hours" name="duration_hours" required>
+        <option value="">Select Hours</option>
+        <!-- Options from 0 to 23 -->
+        {% for i in range(24) %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}</select
+      ><br />
 
       <label for="duration_minutes">Duration Minutes:</label>
-      <input
-        type="number"
-        id="duration_minutes"
-        name="duration_minutes"
-        required
-      /><br />
+      <select id="duration_minutes" name="duration_minutes" required>
+        <option value="">Select Minutes</option>
+        <!-- Options for minutes -->
+        <option value="0">0</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+        <option value="55">55</option></select
+      ><br />
 
       <label for="allocation_type">Allocation Type:</label>
       <select id="allocation_type" name="allocation_type">
@@ -128,12 +308,14 @@
 
       <label for="category_1">Category 1:</label>
       <select id="category_1" name="category_1">
-        <option value="">Select Category 1</option></select
+        <option value="">Select Category 1</option>
+        <!-- Initially empty --></select
       ><br />
 
       <label for="category_2">Category 2:</label>
       <select id="category_2" name="category_2">
-        <option value="">Select Category 2</option></select
+        <option value="">Select Category 2</option>
+        <!-- Initially empty --></select
       ><br />
 
       <label for="category_3">Category 3:</label>
