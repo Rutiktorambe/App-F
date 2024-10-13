@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import sqlite3
 from datetime import datetime
+from datetime import datetime, timedelta
+
 
 
 app = Flask(__name__)
@@ -154,6 +156,97 @@ def unauthorized():
 @login_required
 def success():
     return render_template('success.html')  # Create a success.html template
+
+
+
+from flask import request, jsonify
+from datetime import datetime, timedelta
+from flask_login import login_required, current_user
+
+@app.route('/weekly_summary', methods=['GET'])
+@login_required
+def weekly_summary():
+    # Get the start_date from query parameters or use current week's Monday as default
+    start_date_str = request.args.get('start_date')
+    start_date = datetime.strptime(start_date_str, '%Y-%m-%d') if start_date_str else datetime.now() - timedelta(days=datetime.now().weekday())
+    end_date = start_date + timedelta(days=6)
+
+    # Initialize the summary dictionary
+    summary = {
+        "dates": {f"{(start_date + timedelta(days=i)).strftime('%Y-%m-%d')}": {} for i in range(7)},
+        "totals": {
+            "admin": 0,
+            "billable": 0,
+            "non-billable": 0,
+            "total_time": 0
+        }
+    }
+
+    # Fetch data from the database
+    try:
+        conn = get_db_connection()
+        entries = conn.execute(
+            'SELECT * FROM timesheet_entries WHERE date BETWEEN ? AND ? AND employee_id = ?',
+            (start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'), current_user.id)
+        ).fetchall()
+        conn.close()
+
+        # Process each entry
+        for entry in entries:
+            date = entry['date']
+            allocation_type = entry['allocation_type']
+            total_time = entry['total_time']
+
+            if allocation_type in ['admin', 'billable', 'non-billable']:
+                summary['dates'][date].setdefault(allocation_type, 0)
+                summary['dates'][date][allocation_type] += total_time
+                summary['totals'][allocation_type] += total_time
+
+            summary['dates'][date].setdefault('total_time', 0)
+            summary['dates'][date]['total_time'] += total_time
+            summary['totals']['total_time'] += total_time
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return jsonify({"error": "An error occurred while generating the summary."})
+
+    return jsonify(summary)
+
+
+
+
+
+@app.route('/edit_entry/<int:entry_id>', methods=['POST'])
+@login_required
+def edit_entry(entry_id):
+    # Handle editing logic here
+    # Update the database with the new entry details
+    # Return success message
+    pass
+
+@app.route('/delete_entry/<int:entry_id>', methods=['POST'])
+@login_required
+def delete_entry(entry_id):
+    try:
+        conn = get_db_connection()
+        conn.execute('DELETE FROM timesheet_entries WHERE entree_id = ?', (entry_id,))
+        conn.commit()
+        conn.close()
+        flash('Entry deleted successfully', 'success')
+    except Exception as e:
+        flash(f'Error occurred while deleting entry: {str(e)}', 'error')
+    return redirect(url_for('weekly_summary'))
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":

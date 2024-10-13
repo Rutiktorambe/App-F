@@ -3,7 +3,7 @@ content %}
 <h2>Timesheet Services</h2>
 <ul>
   <li><a href="{{ url_for('fill_timesheet') }}">Fill Timesheet</a></li>
-  <li><a href="{{ url_for('view_summary') }}">View Summary</a></li>
+  <li><a href="{{ url_for('weekly_summary') }}">View Summary</a></li>
 
   <!-- Show Manage Repotree option only if the user is a manager -->
   {% if is_manager %}
