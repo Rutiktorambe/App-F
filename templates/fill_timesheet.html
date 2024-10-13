@@ -1,102 +1,150 @@
-{% extends 'base.html' %} {% block title %}Fill Timesheet{% endblock %} {% block
-content %}
-<h2>Fill Timesheet</h2>
-<form method="POST">
-  <div>
-    <label>Employee ID:</label>
-    <input
-      type="text"
-      name="employee_id"
-      value="{{ current_user.id }}"
-      readonly
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fill Timesheet</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
     />
-  </div>
-  <div>
-    <label>First Name:</label>
-    <input type="text" name="fname" value="{{ current_user.fname }}" readonly />
-  </div>
-  <div>
-    <label>Last Name:</label>
-    <input type="text" name="lname" value="{{ current_user.lname }}" readonly />
-  </div>
-  <div>
-    <label>Team:</label>
-    <input type="text" name="team" value="{{ current_user.team }}" readonly />
-  </div>
+    <style>
+      .error {
+        color: red;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+      $(function () {
+        // Initialize datepicker for multiple date selection
+        $("#datepicker").datepicker({
+          dateFormat: "yy-mm-dd",
+          beforeShowDay: $.datepicker.noWeekends,
+          onSelect: function (dateText) {
+            // Add selected date to hidden input
+            let selectedDates = $("#dates").val().split(",").filter(Boolean);
+            if (!selectedDates.includes(dateText)) {
+              selectedDates.push(dateText);
+            }
+            $("#dates").val(selectedDates.join(","));
+          },
+        });
 
-  <div>
-    <label>Manager Name:</label>
-    <input
-      type="text"
-      name="manager_name"
-      value="{{ current_user.managername }}"
-      readonly
-    />
-  </div>
+        // Update categories based on allocation type
+        $("#allocation_type").change(function () {
+          const allocationType = $(this).val();
+          $("#category_1")
+            .empty()
+            .append('<option value="">Select Category 1</option>');
+          $("#category_2")
+            .empty()
+            .append('<option value="">Select Category 2</option>');
+          $("#category_3")
+            .empty()
+            .append('<option value="">Select Category 3</option>');
 
-  <div>
-    <label>Duration (Hours):</label>
-    <select name="duration_hours">
-      {% for i in range(0, 24) %}
-      <option value="{{ i }}">{{ i }}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <div>
-    <label>Duration (Minutes):</label>
-    <select name="duration_minutes">
-      {% for i in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55] %}
-      <option value="{{ i }}">{{ i }}</option>
-      {% endfor %}
-    </select>
-  </div>
-  <div>
-    <label>Project Code:</label>
-    <input type="text" name="project_code" required />
-  </div>
-  <div>
-    <label>Allocation Type:</label>
-    <select name="allocation_type">
-      <option value="billable">Billable</option>
-      <option value="non-billable">Non-billable</option>
-    </select>
-  </div>
-  <div>
-    <label>Holiday Status:</label>
-    <select name="holiday_status">
-      <option value="None">None</option>
-      <option value="Half Day">Half Day</option>
-      <option value="Full Day">Full Day</option>
-    </select>
-  </div>
-  <div>
-    <label>Category 1:</label>
-    <select name="category_1" id="category_1">
-      <option value="cat1_option1">Cat1 Option 1</option>
-      <option value="cat1_option2">Cat1 Option 2</option>
-      <option value="cat1_option3">Cat1 Option 3</option>
-    </select>
-  </div>
-  <div>
-    <label>Category 2:</label>
-    <select name="category_2" id="category_2">
-      <option value="cat2_option1">Cat2 Option 1</option>
-      <option value="cat2_option2">Cat2 Option 2</option>
-      <option value="cat2_option3">Cat2 Option 3</option>
-    </select>
-  </div>
-  <div>
-    <label>Category 3:</label>
-    <select name="category_3" id="category_3">
-      <option value="cat3_option1">Cat3 Option 1</option>
-      <option value="cat3_option2">Cat3 Option 2</option>
-      <option value="cat3_option3">Cat3 Option 3</option>
-    </select>
-  </div>
-  <div>
-    <label>Comments:</label>
-    <textarea name="comments"></textarea>
-  </div>
-  <button type="submit">Submit</button>
-</form>
-{% endblock %}
+          if (allocationType === "billable") {
+            $("#category_1").append('<option value="cat_b1">Cat B1</option>');
+            $("#category_1").append('<option value="cat_b2">Cat B2</option>');
+          } else if (allocationType === "non-billable") {
+            $("#category_1").append('<option value="admin">Admin</option>');
+            $("#category_1").append(
+              '<option value="training">Training</option>'
+            );
+          }
+        });
+
+        // Populate category 2 based on category 1 selection
+        $("#category_1").change(function () {
+          const selectedCategory = $(this).val();
+          $("#category_2")
+            .empty()
+            .append('<option value="">Select Category 2</option>');
+          $("#category_3")
+            .empty()
+            .append('<option value="">Select Category 3</option>');
+
+          if (selectedCategory === "admin") {
+            $("#category_2").append(
+              '<option value="admin_option1">Admin Option 1</option>'
+            );
+            $("#category_2").append(
+              '<option value="admin_option2">Admin Option 2</option>'
+            );
+          } else if (selectedCategory === "training") {
+            $("#category_2").append(
+              '<option value="training_option1">Training Option 1</option>'
+            );
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Fill Timesheet</h1>
+    <form method="POST" action="/fill_timesheet">
+      <label for="employee_id">Employee ID:</label>
+      <input type="text" id="employee_id" name="employee_id" required /><br />
+
+      <label for="fname">First Name:</label>
+      <input type="text" id="fname" name="fname" required /><br />
+
+      <label for="lname">Last Name:</label>
+      <input type="text" id="lname" name="lname" required /><br />
+
+      <label for="team">Team:</label>
+      <input type="text" id="team" name="team" required /><br />
+
+      <label for="manager_name">Manager Name:</label>
+      <input type="text" id="manager_name" name="manager_name" required /><br />
+
+      <label for="datepicker">Select Dates:</label>
+      <input type="text" id="datepicker" readonly /><br />
+      <input type="hidden" id="dates" name="dates" value="" /><br />
+
+      <label for="duration_hours">Duration Hours:</label>
+      <input
+        type="number"
+        id="duration_hours"
+        name="duration_hours"
+        required
+      /><br />
+
+      <label for="duration_minutes">Duration Minutes:</label>
+      <input
+        type="number"
+        id="duration_minutes"
+        name="duration_minutes"
+        required
+      /><br />
+
+      <label for="allocation_type">Allocation Type:</label>
+      <select id="allocation_type" name="allocation_type">
+        <option value="">Select Allocation Type</option>
+        <option value="billable">Billable</option>
+        <option value="non-billable">Non-Billable</option></select
+      ><br />
+
+      <label for="category_1">Category 1:</label>
+      <select id="category_1" name="category_1">
+        <option value="">Select Category 1</option></select
+      ><br />
+
+      <label for="category_2">Category 2:</label>
+      <select id="category_2" name="category_2">
+        <option value="">Select Category 2</option></select
+      ><br />
+
+      <label for="category_3">Category 3:</label>
+      <select id="category_3" name="category_3">
+        <option value="">Select Category 3</option></select
+      ><br />
+
+      <label for="comments">Comments:</label>
+      <textarea id="comments" name="comments"></textarea><br />
+
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>

@@ -1,8 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import sqlite3
-from datetime import datetime
-
 
 app = Flask(__name__)
 app.secret_key = 'secretkey'  # Required for session management
@@ -76,8 +74,8 @@ def timesheet_home():
     return render_template('timesheet_home.html', is_manager=bool(manager_of_anyone))
 
 # Fill timesheet route
+
 @app.route('/fill_timesheet', methods=['GET', 'POST'])
-@login_required
 def fill_timesheet():
     if request.method == 'POST':
         # Process the form submission
@@ -86,35 +84,33 @@ def fill_timesheet():
         lname = request.form['lname']
         team = request.form['team']
         manager_name = request.form['manager_name']
-        selected_dates = request.form['dates'].split(",")  # Get all selected dates
+        selected_dates = request.form.getlist('dates')  # Get all selected dates
+        
         duration_hours = int(request.form['duration_hours'])
         duration_minutes = int(request.form['duration_minutes'])
         total_time = round(duration_hours + (duration_minutes / 60), 2)
+        project_code = request.form['project_code']
         allocation_type = request.form['allocation_type']
-        category_1 = request.form.get('category_1')  
-        category_2 = request.form.get('category_2')
-        category_3 = request.form.get('category_3')
+        holiday_status = request.form['holiday_status']
+        category_1 = request.form['category_1']
+        category_2 = request.form['category_2']
+        category_3 = request.form['category_3']
         comments = request.form['comments']
 
         # Insert data for each selected date
-        try:
+        for date in selected_dates:
             conn = get_db_connection()
-            for date in selected_dates:
-                conn.execute('''INSERT INTO timesheet_entries (employee_id, fname, lname, team, manager_name, date, duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                    (employee_id, fname, lname, team, manager_name, date, duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments))
+            conn.execute('''
+                INSERT INTO timesheet_entries (employee_id, fname, lname, team, manager_name, date, duration_hours, duration_minutes, total_time, project_code, allocation_type, holiday_status, category_1, category_2, category_3, comments)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (employee_id, fname, lname, team, manager_name, date, duration_hours, duration_minutes, total_time, project_code, allocation_type, holiday_status, category_1, category_2, category_3, comments))
             conn.commit()
             conn.close()
-            flash('Timesheet submitted successfully!', 'success')
-            return redirect(url_for('success'))  # Redirect to a success page
-        except Exception as e:
-            flash(f"Error occurred while submitting timesheet: {str(e)}", 'error')
+        
+        return redirect(url_for('success'))  # Redirect to a success page
 
-    # Render the form initially
+    # Render the form
     return render_template('fill_timesheet.html')
-
-
-
 
 
 # Route for View Summary (example)
@@ -149,12 +145,6 @@ def logout():
 def unauthorized():
     flash('You need to log in first!', 'error')
     return redirect(url_for('login'))
-
-@app.route('/success')
-@login_required
-def success():
-    return render_template('success.html')  # Create a success.html template
-
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -28,28 +28,28 @@
 # conn.commit()
 # conn.close()
 
-
 import sqlite3
 
+# Connect to the database (or create it if it doesn't exist)
 conn = sqlite3.connect('ems_user.db')
 c = conn.cursor()
 
-# Create timesheet_entries table
+# Create timesheet_entries table if it doesn't exist
 c.execute('''
 CREATE TABLE IF NOT EXISTS timesheet_entries (
-    entry_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    entree_id INTEGER PRIMARY KEY AUTOINCREMENT,
     employee_id TEXT,
     fname TEXT,
     lname TEXT,
     team TEXT,
     manager_name TEXT,
+    date TEXT,
     duration_hours INTEGER,
     duration_minutes INTEGER,
     total_time REAL,
     project_code TEXT,
     allocation_type TEXT,
     holiday_status TEXT,
-    unavailable_time REAL,
     category_1 TEXT,
     category_2 TEXT,
     category_3 TEXT,
@@ -57,5 +57,6 @@ CREATE TABLE IF NOT EXISTS timesheet_entries (
 )
 ''')
 
+# Commit the changes and close the connection
 conn.commit()
 conn.close()
