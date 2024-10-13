@@ -23,15 +23,17 @@ content %}
     <label>Team:</label>
     <input type="text" name="team" value="{{ current_user.team }}" readonly />
   </div>
+
   <div>
     <label>Manager Name:</label>
     <input
       type="text"
       name="manager_name"
-      value="{{ current_user.manager_name }}"
+      value="{{ current_user.managername }}"
       readonly
     />
   </div>
+
   <div>
     <label>Duration (Hours):</label>
     <select name="duration_hours">
