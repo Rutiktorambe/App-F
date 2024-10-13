@@ -73,10 +73,52 @@ def timesheet_home():
     return render_template('timesheet_home.html', is_manager=bool(manager_of_anyone))
 
 # Route for Fill Timesheet (example)
-@app.route('/fill_timesheet')
+@app.route('/fill_timesheet', methods=['GET', 'POST'])
 @login_required
 def fill_timesheet():
-    return "Fill Timesheet Page"
+    if request.method == 'POST':
+        # Fetch form data
+        duration_hours = int(request.form['duration_hours'])
+        duration_minutes = int(request.form['duration_minutes'])
+        project_code = request.form['project_code']
+        allocation_type = request.form['allocation_type']
+        holiday_status = request.form['holiday_status']
+        category_1 = request.form['category_1']
+        category_2 = request.form['category_2']
+        category_3 = request.form['category_3']
+        comments = request.form['comments']
+        
+        # Calculate total time in hours
+        total_time = duration_hours + (duration_minutes / 60.0)
+        
+        # Set unavailable_time based on holiday status
+        if holiday_status == 'Full Day':
+            unavailable_time = 7
+        elif holiday_status == 'Half Day':
+            unavailable_time = 3
+        else:
+            unavailable_time = 0
+        
+        # Insert into timesheet_entries table
+        conn = get_db_connection()
+        conn.execute('''
+            INSERT INTO timesheet_entries 
+            (employee_id, fname, lname, team, manager_name, duration_hours, duration_minutes, total_time, 
+            project_code, allocation_type, holiday_status, unavailable_time, category_1, category_2, category_3, comments) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+            (current_user.id, current_user.fname, current_user.lname, current_user.team, current_user.manager_name,
+            duration_hours, duration_minutes, total_time, project_code, allocation_type, holiday_status, 
+            unavailable_time, category_1, category_2, category_3, comments)
+        )
+        conn.commit()
+        conn.close()
+        
+        flash('Timesheet entry submitted successfully!', 'success')
+        return redirect(url_for('timesheet_home'))
+
+    # Render form
+    return render_template('fill_timesheet.html')
+
 
 # Route for View Summary (example)
 @app.route('/view_summary')

@@ -1,0 +1,100 @@
+{% extends 'base.html' %} {% block title %}Fill Timesheet{% endblock %} {% block
+content %}
+<h2>Fill Timesheet</h2>
+<form method="POST">
+  <div>
+    <label>Employee ID:</label>
+    <input
+      type="text"
+      name="employee_id"
+      value="{{ current_user.id }}"
+      readonly
+    />
+  </div>
+  <div>
+    <label>First Name:</label>
+    <input type="text" name="fname" value="{{ current_user.fname }}" readonly />
+  </div>
+  <div>
+    <label>Last Name:</label>
+    <input type="text" name="lname" value="{{ current_user.lname }}" readonly />
+  </div>
+  <div>
+    <label>Team:</label>
+    <input type="text" name="team" value="{{ current_user.team }}" readonly />
+  </div>
+  <div>
+    <label>Manager Name:</label>
+    <input
+      type="text"
+      name="manager_name"
+      value="{{ current_user.manager_name }}"
+      readonly
+    />
+  </div>
+  <div>
+    <label>Duration (Hours):</label>
+    <select name="duration_hours">
+      {% for i in range(0, 24) %}
+      <option value="{{ i }}">{{ i }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <label>Duration (Minutes):</label>
+    <select name="duration_minutes">
+      {% for i in [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55] %}
+      <option value="{{ i }}">{{ i }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <label>Project Code:</label>
+    <input type="text" name="project_code" required />
+  </div>
+  <div>
+    <label>Allocation Type:</label>
+    <select name="allocation_type">
+      <option value="billable">Billable</option>
+      <option value="non-billable">Non-billable</option>
+    </select>
+  </div>
+  <div>
+    <label>Holiday Status:</label>
+    <select name="holiday_status">
+      <option value="None">None</option>
+      <option value="Half Day">Half Day</option>
+      <option value="Full Day">Full Day</option>
+    </select>
+  </div>
+  <div>
+    <label>Category 1:</label>
+    <select name="category_1" id="category_1">
+      <option value="cat1_option1">Cat1 Option 1</option>
+      <option value="cat1_option2">Cat1 Option 2</option>
+      <option value="cat1_option3">Cat1 Option 3</option>
+    </select>
+  </div>
+  <div>
+    <label>Category 2:</label>
+    <select name="category_2" id="category_2">
+      <option value="cat2_option1">Cat2 Option 1</option>
+      <option value="cat2_option2">Cat2 Option 2</option>
+      <option value="cat2_option3">Cat2 Option 3</option>
+    </select>
+  </div>
+  <div>
+    <label>Category 3:</label>
+    <select name="category_3" id="category_3">
+      <option value="cat3_option1">Cat3 Option 1</option>
+      <option value="cat3_option2">Cat3 Option 2</option>
+      <option value="cat3_option3">Cat3 Option 3</option>
+    </select>
+  </div>
+  <div>
+    <label>Comments:</label>
+    <textarea name="comments"></textarea>
+  </div>
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}
