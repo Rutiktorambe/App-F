@@ -1,5 +1,3 @@
-
-
 import sqlite3
 
 conn = sqlite3.connect('ems_user.db')  # Make sure this matches the path used in the app
