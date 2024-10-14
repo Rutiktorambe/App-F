@@ -45,16 +45,27 @@ list-style-type: none;
 display: flex;
 flex-wrap: wrap;
 justify-content: center;
-align-items: center;
 }
 
 .home-services li{
-    height: 5rem;
+   height: 6rem;
    width: 10rem;
-   text-align: center;
-   justify-content: center;
    padding: 20px;
    margin: 20px;
    border: 1px solid black;
    box-sizing: border-box;
+   background-color: rgb(173, 170, 170);
+   color: aliceblue;
+   font-size: 20px;
+   text-shadow: 1px 1px 1px black;
+   align-content: center;
+   border-radius: 10px;
+   box-shadow: 2px 2px 3px black;
+}
+
+.home-services li:hover{
+color: black;
+background-color:  rgb(255, 0, 85);
+text-shadow: 1px 1px 1.5px whitesmoke;
+font-weight: 600;
 }
