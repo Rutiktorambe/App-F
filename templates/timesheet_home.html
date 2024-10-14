@@ -1,13 +1,26 @@
-{% extends 'base.html' %} {% block title %}Timesheet Home{% endblock %} {% block
-content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/timesheet/timesheet_home.css') }}"
+/>
+</head>
+<body>
+  {% include 'navbar.html' %}
 <h2>Timesheet Services</h2>
 <ul>
   <li><a href="{{ url_for('fill_timesheet') }}">Fill Timesheet</a></li>
   <li><a href="/view_summary">View Summary</a></li>
-
-  <!-- Show Manage Repotree option only if the user is a manager -->
   {% if is_manager %}
   <li><a href="{{ url_for('manage_repotree') }}">Manage Repotree</a></li>
   {% endif %}
 </ul>
-{% endblock %}
+
+
+
+</body>
+</html>

@@ -75,7 +75,7 @@ def timesheet_home():
     conn.close()
     
     # Render the timesheet home page with a flag for whether the user is a manager
-    return render_template('timesheet_home.html', is_manager=bool(manager_of_anyone))
+    return render_template('timesheet_home.html', , lname=current_user.lname,is_manager=bool(manager_of_anyone))
 
 # Fill timesheet route
 @app.route('/fill_timesheet', methods=['GET', 'POST'])
