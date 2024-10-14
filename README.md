@@ -1,6 +1,8 @@
 # App-F
-
-color: rgb(255, 0, 85);
+pink 
+ rgb(255, 0, 85);  
+ blue
+ rgb(1, 190, 248);
 
 
     --input-focus:rgb(255, 0, 85);;

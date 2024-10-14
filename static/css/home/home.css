@@ -12,21 +12,21 @@ a {
 .home-banner{
     margin-top: 15px;
     text-align: center;
-    background-color: #868383c0;
+    background-color:  rgb(1, 190, 248);
     width: 100%;
     border-radius: 20px;
     box-shadow: 3px 3px 3px black;
-    color: rgb(1, 190, 248);
     font-weight: 800;
-    text-shadow: 1px 1px 1px rgba(2, 0, 0, 0.692);
     font-size: 20px;
 }
 .home-banner h2{
     color: rgb(255, 0, 85);
+    text-shadow: 1px 1px 1px black;
 }
 .home-banner span{
     padding: 3px;
     color: aliceblue;
+    text-shadow: 1px 1px 1px black;
 }
 
 .home-services{
@@ -54,18 +54,17 @@ justify-content: center;
    margin: 20px;
    border: 1px solid black;
    box-sizing: border-box;
-   background-color: rgb(173, 170, 170);
-   color: aliceblue;
+   background-color: rgb(255, 0, 85);
    font-size: 20px;
    text-shadow: 1px 1px 1px black;
    align-content: center;
    border-radius: 10px;
-   box-shadow: 2px 2px 3px black;
+   text-shadow: 1px 0.5px 1.5px whitesmoke;
+   font-weight: 600;
 }
 
 .home-services li:hover{
 color: black;
-background-color:  rgb(255, 0, 85);
-text-shadow: 1px 1px 1.5px whitesmoke;
-font-weight: 600;
+background-color: rgb(1, 190, 248);
+
 }
