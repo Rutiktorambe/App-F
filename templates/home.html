@@ -1,19 +1,43 @@
-{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content
-%}
-<h2>Welcome, {{ fname }} {{ lname }}</h2>
-<p>Role: {{ role }} | Team: {{ team }}</p>
-<div class="services">
-  <h3>Available Services</h3>
-  <ul>
-    <li><a href="{{ url_for('timesheet_home') }}">Timesheet</a></li>
-    <li>Leave Management</li>
-    <li>IT Helpdesk</li>
-    <li>Finance Reports</li>
-    <li>HR Portal</li>
-    <li>Project Management</li>
-    <li>Performance Reviews</li>
-    <li>Training Portal</li>
-    <li>Customer Support</li>
-  </ul>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/home/home.css') }}"
+    />
+</head>
+<body>
+  <div>
+    {% include 'navbar.html' %}
+  </div>
+<div class="home-box">
+
+  <div class="home-banner">
+    <h2>Welcome,  <span>{{ fname }} {{ lname }}</span></h2>
+    <p>Role: <span> {{ role }} <span style="color: black; font-size: larger;">|</span></span> Team: <span>{{ team }}</span></p>
+  </div>
+  
+  <div class="home-services">
+    <h3>Available Services</h3>
+    <ul>
+      <a href="{{ url_for('timesheet_home') }}"><li>Timesheet</li></a>
+      <a href=""><li>Leave Management</li></a>
+      <a href=""><li>IT Helpdesk</li></a>
+      <a href=""><li>Finance Reports</li></a>
+      <a href=""><li>HR Portal</li></a>
+      <a href=""><li>Project Management</li></a>
+      <a href=""><li>Performance Reviews</li></a>
+      <a href=""><li>Training Portal</li></a>
+      <a href=""><li>Customer Support</li></a>
+    </ul>
+  </div>
 </div>
-{% endblock %}
+</body>
+</html>
+

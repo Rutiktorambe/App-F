@@ -9,7 +9,9 @@ color: rgb(255, 0, 85);
     --bg-color: #fff;
     --main-color: #323232;
     
-
+```html
+{% include 'navbar.html' %}
+ ```
 
 
 

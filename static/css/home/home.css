@@ -1,0 +1,60 @@
+a { 
+    text-decoration: none;
+    color: black;
+}
+.home-box{
+    display: flex;
+    flex-direction: column;
+    margin: 64px;
+    justify-content: center;
+    align-items: center;
+}
+.home-banner{
+    margin-top: 15px;
+    text-align: center;
+    background-color: #868383c0;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 3px 3px 3px black;
+    color: rgb(1, 190, 248);
+    font-weight: 800;
+    text-shadow: 1px 1px 1px rgba(2, 0, 0, 0.692);
+    font-size: 20px;
+}
+.home-banner h2{
+    color: rgb(255, 0, 85);
+}
+.home-banner span{
+    padding: 3px;
+    color: aliceblue;
+}
+
+.home-services{
+   text-align: center;
+}
+
+.home-services h3{
+   font-size: 30px;
+   padding: 2px;
+   text-decoration: underline;
+ }
+
+.home-services ul{
+
+list-style-type: none;
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+}
+
+.home-services li{
+    height: 5rem;
+   width: 10rem;
+   text-align: center;
+   justify-content: center;
+   padding: 20px;
+   margin: 20px;
+   border: 1px solid black;
+   box-sizing: border-box;
+}

@@ -1,0 +1,101 @@
+
+  /* Navbar styling */
+  #navbar {
+    --navbar-bg-color:whitesmoke;
+    --navbar-text-color-focus: #323232;
+    --navbar-text-color: #666;
+    --navbar-text-color-focus: #fff;
+    --navbar-bg-contrast: rgb(255, 0, 85);;
+    position: fixed;
+    height: 64px;
+    background-color: var(--navbar-bg-color);
+    left: 0;
+    right: 0;
+    top: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    z-index: 99;
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 1.4rem;
+  }
+  
+  .home-link {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-logo {
+    background-color: var(--navbar-text-color-focus);
+    border-radius: 50%;
+    width: 40px; /* Adjust size as needed */
+    height: 40px;
+    margin-right: 0.5em;
+  }
+  
+  
+  .navbar-logo img {
+    width: 50px; /* Adjust image size as needed */
+    margin-top: -0.42rem;
+    margin-left: -0.2rem;
+  }
+  
+  .navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  
+  .navbar-link {
+    color: var(--navbar-text-color);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px 15px;
+    transition: background-color 0s ease;
+    
+  }
+  .navbar-link-name{
+    background-color: #666666c9;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 15px;
+    text-decoration: none;
+  }
+  
+  .navbar-link:hover {
+    color: var(--navbar-text-color-focus);
+    background-color: var(--navbar-bg-contrast);
+    border-radius: 15px;
+    transition: 1ms;
+  }
+  
+  .navbar-emp_name {
+    background-color: var(--navbar-text-color);
+    color: var(--navbar-bg-color);
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 15px;
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 700px) {
+    #navbar {
+      position: static; /* Change position for mobile view */
+    }
+  
+    .navbar-links {
+      flex-direction: column; /* Stack links vertically */
+      gap: 10px; /* Spacing between links */
+    }
+  }
+
+
+
+
+
+
+
+  

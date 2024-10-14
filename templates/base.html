@@ -21,3 +21,26 @@
     <div class="content">{% block content %}{% endblock %}</div>
   </body>
 </html>
+
+
+
+
+<!-- Path: templates/navbar.html -->
+<header id="navbar">
+  <nav class="navbar-container container">
+    <a href="/home" class="home-link">
+      <div class="navbar-logo">
+        <img
+          src="{{ url_for('static', filename='images/logo.png') }}"
+          alt="Logo"
+        />
+      </div>
+    </a>
+    <div class="navbar-links">
+      
+      <a class="navbar-link" href="/home">Home</a>
+      <a class="navbar-link" href="/logout">Logout</a>
+      <a href=""><span>{{ fname }} {{ lname }}</span></a>
+    </div>
+  </nav>
+</header>
