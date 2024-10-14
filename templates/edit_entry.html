@@ -1,0 +1,58 @@
+<!-- /templates/edit_entry.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Edit Entry</title>
+  </head>
+  <body>
+    <h1>Edit Entry for {{ entry.date }}</h1>
+    <a href="{{ url_for('view_entries_by_date', date=entry.date) }}"
+      >Back to Entries for {{ entry.date }}</a
+    >
+
+    <form
+      action="{{ url_for('update_entry', entry_id=entry.entree_id) }}"
+      method="post"
+    >
+      <label for="duration_hours">Duration (Hours):</label>
+      <input
+        type="number"
+        name="duration_hours"
+        value="{{ entry.duration_hours }}"
+        required
+      />
+
+      <label for="duration_minutes">Duration (Minutes):</label>
+      <input
+        type="number"
+        name="duration_minutes"
+        value="{{ entry.duration_minutes }}"
+        required
+      />
+
+      <label for="allocation_type">Allocation Type:</label>
+      <input
+        type="text"
+        name="allocation_type"
+        value="{{ entry.allocation_type }}"
+        required
+      />
+
+      <label for="category_1">Category 1:</label>
+      <input type="text" name="category_1" value="{{ entry.category_1 }}" />
+
+      <label for="category_2">Category 2:</label>
+      <input type="text" name="category_2" value="{{ entry.category_2 }}" />
+
+      <label for="category_3">Category 3:</label>
+      <input type="text" name="category_3" value="{{ entry.category_3 }}" />
+
+      <label for="comments">Comments:</label>
+      <textarea name="comments">{{ entry.comments }}</textarea>
+
+      <input type="hidden" name="date" value="{{ entry.date }}" />
+      <button type="submit">Save Changes</button>
+    </form>
+  </body>
+</html>

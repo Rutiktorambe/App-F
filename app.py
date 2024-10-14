@@ -245,40 +245,58 @@ def view_entries_by_date(date):
 
 
 
-@app.route('/edit_entry/<int:entry_id>', methods=['GET', 'POST'])
+# Route to render the edit entry form
+@app.route('/edit_entry/<int:entry_id>', methods=['GET'])
 @login_required
 def edit_entry(entry_id):
-    if request.method == 'POST':
-        # Get updated values from the form
-        duration_hours = int(request.form['duration_hours'])
-        duration_minutes = int(request.form['duration_minutes'])
-        total_time = round(duration_hours + (duration_minutes / 60), 2)
-        allocation_type = request.form['allocation_type']
-        category_1 = request.form['category_1']
-        category_2 = request.form['category_2']
-        category_3 = request.form['category_3']
-        comments = request.form['comments']
+    try:
+        conn = get_db_connection()
+        entry = conn.execute(
+            'SELECT * FROM timesheet_entries WHERE entree_id = ? AND employee_id = ?',
+            (entry_id, current_user.id)
+        ).fetchone()
+        conn.close()
+        if not entry:
+            flash('Entry not found or unauthorized access.', 'error')
+            return redirect(url_for('view_summary'))
+    except Exception as e:
+        flash(f'Error fetching entry: {str(e)}', 'error')
+        return redirect(url_for('view_summary'))
 
-        try:
-            conn = get_db_connection()
-            conn.execute('''
-                UPDATE timesheet_entries
-                SET duration_hours = ?, duration_minutes = ?, total_time = ?, allocation_type = ?, category_1 = ?, category_2 = ?, category_3 = ?, comments = ?
-                WHERE entree_id = ?
-            ''', (duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments, entry_id))
-            conn.commit()
-            conn.close()
-            flash('Entry updated successfully', 'success')
-        except Exception as e:
-            flash(f'Error occurred while updating entry: {str(e)}', 'error')
-
-        return redirect(url_for('view_entries_by_date', date=request.form['date']))
-
-    # Render the edit form with current entry details
-    conn = get_db_connection()
-    entry = conn.execute('SELECT * FROM timesheet_entries WHERE entree_id = ?', (entry_id,)).fetchone()
-    conn.close()
     return render_template('edit_entry.html', entry=entry)
+
+# Route to handle updating the entry
+@app.route('/update_entry/<int:entry_id>', methods=['POST'])
+@login_required
+def update_entry(entry_id):
+    try:
+        # Get form data safely
+        duration_hours = int(request.form.get('duration_hours', 0))
+        duration_minutes = int(request.form.get('duration_minutes', 0))
+        total_time = round(duration_hours + (duration_minutes / 60), 2)
+        allocation_type = request.form.get('allocation_type', '')
+        category_1 = request.form.get('category_1', '')
+        category_2 = request.form.get('category_2', '')
+        category_3 = request.form.get('category_3', '')
+        comments = request.form.get('comments', '')
+
+        # Update the database entry
+        conn = get_db_connection()
+        conn.execute('''
+            UPDATE timesheet_entries
+            SET duration_hours = ?, duration_minutes = ?, total_time = ?, 
+                allocation_type = ?, category_1 = ?, category_2 = ?, category_3 = ?, comments = ?
+            WHERE entree_id = ? AND employee_id = ?
+        ''', (duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments, entry_id, current_user.id))
+        conn.commit()
+        conn.close()
+        flash('Entry updated successfully', 'success')
+    except Exception as e:
+        flash(f'Error occurred while updating entry: {str(e)}', 'error')
+
+    # Redirect back to the view for this date's entries
+    return redirect(url_for('view_entries_by_date', date=request.form.get('date')))
+
 
 
 
