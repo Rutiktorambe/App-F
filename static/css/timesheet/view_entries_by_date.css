@@ -1,6 +1,7 @@
 .ts-dateentry-title {
   font-size: 2em;
   color: #333;
+  text-align: center;
 }
 
 .ts-dateentry-back-link {
@@ -54,4 +55,35 @@
   border: none;
   padding: 0.3em 0.5em;
   cursor: pointer;
+}
+
+.ts-nav-container {
+  margin-top: 64px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+}
+
+.ts-nav-center {
+  display: flex;
+}
+
+.ts-nav-link {
+  margin: 0 25px; /* Increased gap between links */
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ccc; /* Add a light gray border */
+  padding: 8px 15px; /* Add some padding to the links */
+  border-radius: 5px; /* Add rounded corners to the links */
+}
+
+.view-box {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }

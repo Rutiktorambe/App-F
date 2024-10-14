@@ -9,6 +9,18 @@
     />
 </head>
 <body>
+  <div>
+
+        {% include 'navbar.html' %}
+  <nav class="ts-nav-container">
+        <div class="ts-nav-center">
+          <a href="/timesheet_home" class="ts-nav-link">Timesheet</a>
+          <a href="/fill_timesheet" class="ts-nav-link">Fill Timesheet</a>\
+           <a href="/view_summary" class="ts-nav-link">View Summery</a>
+        </div>
+      </nav>
+      <div class="view-box">
+        
 <h1 class="ts-dateentry-title">Entries for {{ date }}</h1>
 <table>
 <thead class="ts-dateentry-header">
@@ -54,5 +66,7 @@ method="post"
  {% endif %}
  </tbody>
 </table>
+      </div>
+  </div>
 </body>
 </html>
