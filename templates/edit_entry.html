@@ -1,58 +1,116 @@
 <!-- /templates/edit_entry.html -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8">
     <title>Edit Entry</title>
-  </head>
-  <body>
+    <script>
+        // JavaScript to populate duration dropdowns on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const durationHoursDropdown = document.getElementById('duration_hours');
+            const durationMinutesDropdown = document.getElementById('duration_minutes');
+
+            // Populate Duration Hours dropdown (0-23)
+            for (let i = 0; i <= 23; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                if (i === {{ entry.duration_hours|default(0) }}) {
+                    option.selected = true; // Pre-select the current value
+                }
+                durationHoursDropdown.appendChild(option);
+            }
+
+            // Populate Duration Minutes dropdown (0, 5, 10, ..., 55)
+            for (let i = 0; i < 60; i += 5) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                if (i === {{ entry.duration_minutes|default(0) }}) {
+                    option.selected = true; // Pre-select the current value
+                }
+                durationMinutesDropdown.appendChild(option);
+            }
+        });
+
+        // JavaScript to dynamically update category options based on the selected allocation type
+        function updateCategories() {
+            const allocationType = document.getElementById('allocation_type').value;
+            const category1 = document.getElementById('category_1');
+            const category2 = document.getElementById('category_2');
+            const category3 = document.getElementById('category_3');
+
+            // Clear previous options
+            category1.innerHTML = '';
+            category2.innerHTML = '';
+            category3.innerHTML = '';
+
+            if (allocationType === 'Billable') {
+                // Populate Category 1 for Billable
+                addOption(category1, 'Cat B1', 'Cat B1');
+                addOption(category1, 'Cat B2', 'Cat B2');
+            } else if (allocationType === 'Non-Billable') {
+                // Populate Category 1 for Non-Billable
+                addOption(category1, 'Admin', 'Admin');
+                addOption(category1, 'Training', 'Training');
+            }
+
+            // Reset Category 2 and Category 3
+            addOption(category2, '', 'Select Category 2');
+            addOption(category3, '', 'Select Category 3');
+        }
+
+        // Function to add an option to a dropdown
+        function addOption(dropdown, value, text) {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = text;
+            dropdown.appendChild(option);
+        }
+    </script>
+</head>
+<body>
     <h1>Edit Entry for {{ entry.date }}</h1>
-    <a href="{{ url_for('view_entries_by_date', date=entry.date) }}"
-      >Back to Entries for {{ entry.date }}</a
-    >
+    <a href="{{ url_for('view_entries_by_date', date=entry.date) }}">Back to Entries for {{ entry.date }}</a>
 
-    <form
-      action="{{ url_for('update_entry', entry_id=entry.entree_id) }}"
-      method="post"
-    >
-      <label for="duration_hours">Duration (Hours):</label>
-      <input
-        type="number"
-        name="duration_hours"
-        value="{{ entry.duration_hours }}"
-        required
-      />
-
-      <label for="duration_minutes">Duration (Minutes):</label>
-      <input
-        type="number"
-        name="duration_minutes"
-        value="{{ entry.duration_minutes }}"
-        required
-      />
-
-      <label for="allocation_type">Allocation Type:</label>
-      <input
-        type="text"
-        name="allocation_type"
-        value="{{ entry.allocation_type }}"
-        required
-      />
-
-      <label for="category_1">Category 1:</label>
-      <input type="text" name="category_1" value="{{ entry.category_1 }}" />
-
-      <label for="category_2">Category 2:</label>
-      <input type="text" name="category_2" value="{{ entry.category_2 }}" />
-
-      <label for="category_3">Category 3:</label>
-      <input type="text" name="category_3" value="{{ entry.category_3 }}" />
-
-      <label for="comments">Comments:</label>
-      <textarea name="comments">{{ entry.comments }}</textarea>
-
-      <input type="hidden" name="date" value="{{ entry.date }}" />
-      <button type="submit">Save Changes</button>
+    <form action="{{ url_for('update_entry', entry_id=entry.entree_id) }}" method="post">
+        <label for="duration_hours">Duration (Hours):</label>
+        <select name="duration_hours" id="duration_hours" required>
+            <!-- Options populated dynamically -->
+        </select>
+        
+        <label for="duration_minutes">Duration (Minutes):</label>
+        <select name="duration_minutes" id="duration_minutes" required>
+            <!-- Options populated dynamically -->
+        </select>
+        
+        <label for="allocation_type">Allocation Type:</label>
+        <select name="allocation_type" id="allocation_type" onchange="updateCategories()" required>
+            <option value="">Select Allocation Type</option>
+            <option value="Billable" {% if entry.allocation_type == 'Billable' %}selected{% endif %}>Billable</option>
+            <option value="Non-Billable" {% if entry.allocation_type == 'Non-Billable' %}selected{% endif %}>Non-Billable</option>
+        </select>
+        
+        <label for="category_1">Category 1:</label>
+        <select name="category_1" id="category_1" required>
+            <!-- Options populated based on allocation type -->
+        </select>
+        
+        <label for="category_2">Category 2:</label>
+        <select name="category_2" id="category_2">
+            <!-- Options populated dynamically -->
+        </select>
+        
+        <label for="category_3">Category 3:</label>
+        <select name="category_3" id="category_3">
+            <!-- Options populated dynamically -->
+        </select>
+        
+        <label for="comments">Comments:</label>
+        <textarea name="comments">{{ entry.comments }}</textarea>
+        
+        <input type="hidden" name="date" value="{{ entry.date }}">
+        <button type="submit">Save Changes</button>
     </form>
-  </body>
+</body>
 </html>
