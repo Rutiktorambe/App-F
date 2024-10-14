@@ -1,0 +1,103 @@
+.ts-edit-page {
+  text-align: center;
+}
+.ts-edit-title {
+  font-size: 1.8em;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.ts-edit-back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.ts-edit-form {
+  max-width: 500px;
+  margin: 2rem auto; /* Center the form with top/bottom margin */
+  padding: 2rem;
+  border: 1px solid #dee2e6; /* Light gray border */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.ts-edit-label {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+.ts-edit-select {
+  display: inline-block;
+  padding: 0.3rem 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+.ts-edit-textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box;
+  height: 100px;
+  resize: vertical;
+}
+
+.ts-edit-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.ts-edit-button:hover {
+  background-color: #218838;
+}
+
+.ts-edit-inline-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.ts-edit-inline-field .ts-edit-select {
+  width: auto;
+}
+
+.ts-nav-container {
+  margin-top: 64px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+}
+
+.ts-nav-center {
+  display: flex;
+}
+
+.ts-nav-link {
+  margin: 0 25px; /* Increased gap between links */
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ccc; /* Add a light gray border */
+  padding: 8px 15px; /* Add some padding to the links */
+  border-radius: 5px; /* Add rounded corners to the links */
+}
