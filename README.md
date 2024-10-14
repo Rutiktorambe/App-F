@@ -4,6 +4,10 @@ pink
  blue
  rgb(1, 190, 248);
 
+'''password
+HYDRAxJonathan
+Latur@4255
+````
 
     --input-focus:rgb(255, 0, 85);;
     --font-color: #323232;
