@@ -88,7 +88,7 @@ def fill_timesheet():
         lname = request.form['lname']
         team = request.form['team']
         manager_name = request.form['manager_name']
-        selected_dates = request.form['dates'].split(",")  # Get all selected dates
+        selected_dates = request.form['dates'].split(",")  
         duration_hours = int(request.form['duration_hours'])
         duration_minutes = int(request.form['duration_minutes'])
         total_time = round(duration_hours + (duration_minutes / 60), 2)
@@ -98,7 +98,7 @@ def fill_timesheet():
         category_3 = request.form.get('category_3')
         comments = request.form['comments']
 
-        # Insert data for each selected date
+    
         try:
             conn = get_db_connection()
             for date in selected_dates:

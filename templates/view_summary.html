@@ -3,57 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <title>Weekly Summary</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/timesheet/view_summary.css') }}"
+    />
   </head>
+
   <body>
-    <h1>Weekly Summary</h1>
+    {% include 'navbar.html' %}
+    <div class="summary-box">
+      <nav class="ts-nav-container">
+        <div class="ts-nav-center">
+          <a href="/timesheet_home" class="ts-nav-link">Timesheet</a>
+          <a href="/fill_timesheet" class="ts-nav-link">Fill Timesheet</a>
+        </div>
+      </nav>
+      <div class="ts-summary-container">
+        <h1 class="ts-summary-title">Weekly Summary</h1>
 
-    <form action="{{ url_for('view_summary') }}" method="get">
-      <input type="date" name="date" value="{{ start_date }}" required />
-      <button type="submit">Show Week</button>
-    </form>
+        <form
+          action="{{ url_for('view_summary') }}"
+          method="get"
+          class="ts-summary-form"
+        >
+          <input
+            type="date"
+            name="date"
+            value="{{ start_date }}"
+            required
+            class="ts-summary-date-input"
+          />
 
-    <a href="{{ url_for('previous_week', start_date=start_date) }}"
-      >Previous Week</a
-    >
-    <a href="{{ url_for('next_week', start_date=start_date) }}">Next Week</a>
+          <button type="submit" class="ts-summary-button">Show Week</button>
+        </form>
+        <div class="ts-summary-navigation">
+          <a
+            href="{{ url_for('previous_week', start_date=start_date) }}"
+            class="ts-summary-link"
+            >Previous Week</a
+          >
+          <a
+            href="{{ url_for('next_week', start_date=start_date) }}"
+            class="ts-summary-link"
+            >Next Week</a
+          >
+        </div>
+        <table class="ts-summary-table">
+          <thead>
+            <tr>
+              <th class="ts-summary-header">Date</th>
+              <th class="ts-summary-header">Admin</th>
+              <th class="ts-summary-header">Billable</th>
+              <th class="ts-summary-header">Training</th>
+              <th class="ts-summary-header">Non-billable</th>
+              <th class="ts-summary-header">Total Time</th>
+            </tr>
+          </thead>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Admin</th>
-          <th>Billable</th>
-          <th>Training</th>
-          <!-- New Training Column -->
-          <th>Non-billable</th>
-          <th>Total Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% if summary.dates %} {% for date, details in summary.dates.items() %}
-        <tr>
-          <td>
-            <a href="{{ url_for('view_entries_by_date', date=date) }}">
-              {{ date }}
-            </a>
-          </td>
-          <td>{{ details.admin | default(0) }}</td>
-          <td>{{ details.billable | default(0) }}</td>
-          <td>{{ details.training | default(0) }}</td>
-          <!-- Training Time Display -->
-          <td>
-            {{ details['non-billable'] | default(0) + details.training |
-            default(0) }}
-          </td>
-          <!-- Non-billable Time Calculation -->
-          <td>{{ details.total_time | default(0) }}</td>
-        </tr>
-        {% endfor %} {% else %}
-        <tr>
-          <td colspan="6">No entries found for this week.</td>
-        </tr>
-        {% endif %}
-      </tbody>
-    </table>
+          <tbody>
+            {% if summary.dates %} {% for date, details in summary.dates.items()
+            %}
+            <tr>
+              <td class="ts-summary-data">
+                <a
+                  href="{{ url_for('view_entries_by_date', date=date) }}"
+                  class="ts-summary-link"
+                >
+                  {{ date }}
+                </a>
+              </td>
+
+              <td class="ts-summary-data">{{ details.admin | default(0) }}</td>
+              <td class="ts-summary-data">
+                {{ details.billable | default(0) }}
+              </td>
+              <td class="ts-summary-data">
+                {{ details.training | default(0) }}
+              </td>
+              <td class="ts-summary-data">
+                {{ details['non-billable'] | default(0) + details.training |
+                default(0) }}
+              </td>
+              <td class="ts-summary-data">
+                {{ details.total_time | default(0) }}
+              </td>
+            </tr>
+            {% endfor %} {% else %}
+            <tr>
+              <td colspan="6" class="ts-summary-no-data">
+                No entries found for this week.
+              </td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </body>
 </html>

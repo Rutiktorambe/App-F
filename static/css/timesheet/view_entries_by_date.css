@@ -1,0 +1,57 @@
+.ts-dateentry-title {
+  font-size: 2em;
+  color: #333;
+}
+
+.ts-dateentry-back-link {
+  display: block;
+  margin-bottom: 1em;
+  color: #007bff; /* Example link color */
+}
+
+.ts-dateentry-header {
+  background-color: #f8f9fa; /* Light gray background */
+}
+
+.ts-dateentry-header-cell {
+  font-weight: bold;
+  padding: 0.5em;
+  border: 1px solid #dee2e6; /* Light border */
+}
+
+.ts-dateentry-row {
+  background-color: #fff; /* White background */
+}
+
+.ts-dateentry-row:nth-child(even) {
+  background-color: #f2f2f2; /* Alternate row color */
+}
+
+.ts-dateentry-cell {
+  padding: 0.5em;
+  border: 1px solid #dee2e6; /* Light border */
+}
+
+/* Style for Edit button */
+.ts-dateentry-link {
+  background-color: #ffc107; /* Example yellow color */
+  color: white;
+  border: none;
+  padding: 0.3em 0.5em;
+  cursor: pointer;
+  margin-right: 1em; /* Add some space between buttons */
+  text-decoration: none; /* Remove underline from link */
+  display: inline-block; /* Make it behave like a button */
+}
+
+.ts-dateentry-form {
+  display: inline-block; /* Keep form elements in line */
+}
+
+.ts-dateentry-button {
+  background-color: #dc3545; /* Example button color */
+  color: white;
+  border: none;
+  padding: 0.3em 0.5em;
+  cursor: pointer;
+}

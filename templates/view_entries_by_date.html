@@ -1,56 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <title>Entries for {{ date }}</title>
-  </head>
-  <body>
-    <h1>Entries for {{ date }}</h1>
-    <a href="{{ url_for('view_summary', date=date) }}"
-      >Back to Weekly Summary</a
-    >
-    <table>
-      <thead>
-        <tr>
-          <th>Duration (Hours)</th>
-          <th>Duration (Minutes)</th>
-          <th>Total Time</th>
-          <th>Allocation Type</th>
-          <th>Category 1</th>
-          <th>Category 2</th>
-          <th>Category 3</th>
-          <th>Comments</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% if entries %} {% for entry in entries %}
-        <tr>
-          <td>{{ entry.duration_hours }}</td>
-          <td>{{ entry.duration_minutes }}</td>
-          <td>{{ entry.total_time }}</td>
-          <td>{{ entry.allocation_type }}</td>
-          <td>{{ entry.category_1 }}</td>
-          <td>{{ entry.category_2 }}</td>
-          <td>{{ entry.category_3 }}</td>
-          <td>{{ entry.comments }}</td>
-          <td>
-             <a href="{{ url_for('edit_entry', entry_id=entry.entree_id) }}">Edit</a>
-            </form>
-            <form
-              action="{{ url_for('delete_entry', entry_id=entry.entree_id) }}"
-              method="post"
-            >
-              <button type="submit">Delete</button>
-            </form>
-          </td>
-        </tr>
-        {% endfor %} {% else %}
-        <tr>
-          <td colspan="9">No entries found for this date.</td>
-        </tr>
-        {% endif %}
-      </tbody>
-    </table>
-  </body>
+<meta charset="UTF-8" />
+<title>Entries for {{ date }}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/timesheet/view_entries_by_date.css') }}"
+    />
+</head>
+<body>
+<h1 class="ts-dateentry-title">Entries for {{ date }}</h1>
+<table>
+<thead class="ts-dateentry-header">
+<tr class="ts-dateentry-header-row">
+<th class="ts-dateentry-header-cell">Duration (Hours)</th>
+<th class="ts-dateentry-header-cell">Duration (Minutes)</th>
+<th class="ts-dateentry-header-cell">Total Time</th>
+<th class="ts-dateentry-header-cell">Allocation Type</th>
+<th class="ts-dateentry-header-cell">Category 1</th>
+<th class="ts-dateentry-header-cell">Category 2</th>
+ <th class="ts-dateentry-header-cell">Category 3</th>
+<th class="ts-dateentry-header-cell">Comments</th>
+<th class="ts-dateentry-header-cell">Actions</th>
+</tr>
+</thead>
+<tbody>
+ {% if entries %} {% for entry in entries %}
+<tr class="ts-dateentry-row">
+<td class="ts-dateentry-cell">{{ entry.duration_hours }}</td>
+<td class="ts-dateentry-cell">{{ entry.duration_minutes }}</td>
+<td class="ts-dateentry-cell">{{ entry.total_time }}</td>
+<td class="ts-dateentry-cell">{{ entry.allocation_type }}</td>
+<td class="ts-dateentry-cell">{{ entry.category_1 }}</td>
+<td class="ts-dateentry-cell">{{ entry.category_2 }}</td>
+<td class="ts-dateentry-cell">{{ entry.category_3 }}</td>
+<td class="ts-dateentry-cell">{{ entry.comments }}</td>
+<td class="ts-dateentry-cell">
+<a  class="ts-dateentry-link" href="{{ url_for('edit_entry', entry_id=entry.entree_id) }}">Edit</a>
+</form>
+<form
+ class="ts-dateentry-form"
+action="{{ url_for('delete_entry', entry_id=entry.entree_id) }}"
+method="post"
+ >
+<button class="ts-dateentry-button" type="submit">Delete</button>
+ </form>
+</td>
+ </tr>
+{% endfor %} {% else %}
+<tr class="ts-dateentry-row">
+<td colspan="9" class="ts-dateentry-cell">No entries found for this date.</td>
+</tr>
+ {% endif %}
+ </tbody>
+</table>
+</body>
 </html>

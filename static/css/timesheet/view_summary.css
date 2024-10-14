@@ -1,0 +1,116 @@
+.summary-box {
+  margin-top: 64px;
+}
+
+.ts-summary-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.ts-summary-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.ts-summary-form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.ts-summary-date-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.ts-summary-button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.ts-summary-navigation {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.ts-summary-link {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.ts-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Ensures equal column width */
+}
+
+.ts-summary-header {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  width: 14.28%; /* Equal distribution of column width */
+  border: 1px solid white; /* White border for header cells */
+}
+
+.ts-summary-data {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  border-left: 1px solid #ddd; /* Left border for data cells */
+}
+
+.ts-summary-data:first-child {
+  /* No left border for first cell in a row */
+  border-left: none;
+}
+
+.ts-summary-no-data {
+  text-align: center;
+  padding: 10px;
+  font-style: italic;
+}
+.ts-summary-navigation a {
+  /* Targets the links within the navigation div */
+  display: inline-block;
+  padding: 8px 15px;
+  margin: 0 10px;
+  text-decoration: none;
+  color: white; /* Sets the text color to white */
+  background-color: #007bff; /* Blue background color for the links */
+  border-radius: 4px; /* Adds rounded corners */
+}
+
+.ts-nav-container {
+  margin-top: 64px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+}
+
+.ts-nav-center {
+  display: flex;
+}
+
+.ts-nav-link {
+  margin: 0 25px; /* Increased gap between links */
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #ccc; /* Add a light gray border */
+  padding: 8px 15px; /* Add some padding to the links */
+  border-radius: 5px; /* Add rounded corners to the links */
+}
