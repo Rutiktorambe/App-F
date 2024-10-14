@@ -32,7 +32,11 @@
       <tbody>
         {% if summary.dates %} {% for date, details in summary.dates.items() %}
         <tr>
-          <td>{{ date }}</td>
+          <td>
+            <a href="{{ url_for('view_entries_by_date', date=date) }}">
+              {{ date }}
+            </a>
+          </td>
           <td>{{ details.admin | default(0) }}</td>
           <td>{{ details.billable | default(0) }}</td>
           <td>{{ details.training | default(0) }}</td>

@@ -223,13 +223,64 @@ def previous_week():
 
 
 
-@app.route('/edit_entry/<int:entry_id>', methods=['POST'])
+
+@app.route('/view_entries_by_date/<date>', methods=['GET'])
+@login_required
+def view_entries_by_date(date):
+    try:
+        conn = get_db_connection()
+        entries = conn.execute(
+            'SELECT * FROM timesheet_entries WHERE date = ? AND employee_id = ?',
+            (date, current_user.id)
+        ).fetchall()
+        conn.close()
+    except Exception as e:
+        flash(f"An error occurred while fetching entries: {str(e)}", 'error')
+        return redirect(url_for('view_summary'))
+
+    return render_template('view_entries_by_date.html', entries=entries, date=date)
+
+
+
+
+
+
+@app.route('/edit_entry/<int:entry_id>', methods=['GET', 'POST'])
 @login_required
 def edit_entry(entry_id):
-    # Handle editing logic here
-    # Update the database with the new entry details
-    # Return success message
-    pass
+    if request.method == 'POST':
+        # Get updated values from the form
+        duration_hours = int(request.form['duration_hours'])
+        duration_minutes = int(request.form['duration_minutes'])
+        total_time = round(duration_hours + (duration_minutes / 60), 2)
+        allocation_type = request.form['allocation_type']
+        category_1 = request.form['category_1']
+        category_2 = request.form['category_2']
+        category_3 = request.form['category_3']
+        comments = request.form['comments']
+
+        try:
+            conn = get_db_connection()
+            conn.execute('''
+                UPDATE timesheet_entries
+                SET duration_hours = ?, duration_minutes = ?, total_time = ?, allocation_type = ?, category_1 = ?, category_2 = ?, category_3 = ?, comments = ?
+                WHERE entree_id = ?
+            ''', (duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments, entry_id))
+            conn.commit()
+            conn.close()
+            flash('Entry updated successfully', 'success')
+        except Exception as e:
+            flash(f'Error occurred while updating entry: {str(e)}', 'error')
+
+        return redirect(url_for('view_entries_by_date', date=request.form['date']))
+
+    # Render the edit form with current entry details
+    conn = get_db_connection()
+    entry = conn.execute('SELECT * FROM timesheet_entries WHERE entree_id = ?', (entry_id,)).fetchone()
+    conn.close()
+    return render_template('edit_entry.html', entry=entry)
+
+
 
 @app.route('/delete_entry/<int:entry_id>', methods=['POST'])
 @login_required
@@ -242,16 +293,7 @@ def delete_entry(entry_id):
         flash('Entry deleted successfully', 'success')
     except Exception as e:
         flash(f'Error occurred while deleting entry: {str(e)}', 'error')
-    return redirect(url_for('weekly_summary'))
-
-
-
-
-
-
-
-
-
+    return redirect(url_for('view_summary'))
 
 
 
