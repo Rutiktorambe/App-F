@@ -7,15 +7,15 @@ from datetime import datetime, timedelta
 
 
 app = Flask(__name__)
-app.secret_key = 'secretkey'  # Required for session management
+app.secret_key = 'secretkey' 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'  # Redirect users to login page if not logged in
+login_manager.login_view = 'login'  
 
 # Database connection function
 def get_db_connection():
-    conn = sqlite3.connect('ems_user.db')  # Ensure the correct path to your SQLite database
-    conn.row_factory = sqlite3.Row  # This allows us to return rows as dictionaries
+    conn = sqlite3.connect('ems_user.db')  
+    conn.row_factory = sqlite3.Row  
     return conn
 
 # User class for Flask-Login
@@ -75,7 +75,7 @@ def timesheet_home():
     conn.close()
     
     # Render the timesheet home page with a flag for whether the user is a manager
-    return render_template('timesheet_home.html', , lname=current_user.lname,is_manager=bool(manager_of_anyone))
+    return render_template('timesheet_home.html', fname=current_user.fname,  lname=current_user.lname,is_manager=bool(manager_of_anyone))
 
 # Fill timesheet route
 @app.route('/fill_timesheet', methods=['GET', 'POST'])
@@ -113,24 +113,62 @@ def fill_timesheet():
             flash(f"Error occurred while submitting timesheet: {str(e)}", 'error')
 
     # Render the form initially
-    return render_template('fill_timesheet.html')
+    return render_template('fill_timesheet.html', fname=current_user.fname,  lname=current_user.lname)
 
-
-
-
-# Route for Manage Repotree (example)
-@app.route('/manage_repotree')
+@app.route('/view_repotree', methods=['GET', 'POST'])
 @login_required
-def manage_repotree():
-    # Make sure that only managers can access this page
+def view_repotree():
+    edit_entry = None
+    edit_entry_id = request.args.get('edit_entry_id')
+
+    if request.method == 'POST':
+        entry_id = request.form.get('entry_id')
+        project_code = request.form.get('project_code')
+
+        # Update the project code in the database
+        conn = get_db_connection()
+        conn.execute(
+            'UPDATE timesheet_entries SET project_code = ? WHERE entree_id = ?',
+            (project_code, entry_id)
+        )
+        conn.commit()
+        conn.close()
+        flash('Project code updated successfully!', 'success')
+
+        # Redirect to avoid resubmitting the form
+        return redirect(url_for('view_repotree'))
+
+    # Fetch the employees managed by the current user
     conn = get_db_connection()
-    manager_of_anyone = conn.execute('SELECT 1 FROM EMS_users WHERE ManagerID = ?', (current_user.id,)).fetchone()
+    repotree_employees = conn.execute(
+        'SELECT * FROM EMS_users WHERE ManagerID = ?',
+        (current_user.id,)
+    ).fetchall()
+
+    if not repotree_employees:
+        conn.close()
+        flash('You do not manage any employees.', 'error')
+        return redirect(url_for('home'))
+
+    # Fetch timesheet entries for all managed employees
+    employee_ids = [employee['EmployeeID'] for employee in repotree_employees]
+    placeholders = ', '.join(['?'] * len(employee_ids))
+    timesheet_entries = conn.execute(
+        f'SELECT * FROM timesheet_entries WHERE employee_id IN ({placeholders})',
+        employee_ids
+    ).fetchall()
+
+    # Fetch the entry for editing if an ID is provided
+    if edit_entry_id:
+        edit_entry = conn.execute(
+            'SELECT * FROM timesheet_entries WHERE entree_id = ?',
+            (edit_entry_id,)
+        ).fetchone()
+
     conn.close()
-    
-    if not manager_of_anyone:
-        return "Unauthorized", 403
-    
-    return "Manage Repotree Page"
+    return render_template('view_repotree.html', employees=repotree_employees, timesheets=timesheet_entries, edit_entry=edit_entry)
+
+
 
 # Route for logout
 @app.route('/logout')

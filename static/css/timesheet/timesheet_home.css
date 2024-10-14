@@ -1,0 +1,47 @@
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.ts-home {
+  display: flex;
+  flex-direction: column;
+  margin: 64px;
+  justify-content: center;
+  align-items: center;
+}
+
+.ts-home h2 {
+  font-size: 30px;
+  padding: 2px;
+  text-decoration: underline;
+}
+
+.ts-home ul {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+
+.ts-home li {
+  height: 6rem;
+  width: 10rem;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid black;
+  box-sizing: border-box;
+  background-color: rgb(255, 0, 85);
+  font-size: 20px;
+  text-shadow: 1px 1px 1px black;
+  align-content: center;
+  border-radius: 10px;
+  text-shadow: 0.5px 0.5px 1.5px whitesmoke;
+  font-weight: bold;
+}
+
+.ts-home li:hover {
+  color: black;
+  background-color: rgb(1, 190, 248);
+}
