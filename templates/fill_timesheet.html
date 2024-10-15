@@ -32,24 +32,30 @@
           mode: "multiple",
           dateFormat: "Y-m-d",
           maxDate: "today",
-          onChange: function (selectedDates) {
-            datesInput.val(
-              selectedDates
-                .map((date) => date.toISOString().split("T")[0])
-                .join(",")
-            );
+     onChange: function (selectedDates) {
+  const adjustedDates = selectedDates.map(date => {
+    // Adjust date as needed; for example, if you want to keep it in UTC
+    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); // Convert to UTC
+  });
+  
+  datesInput.val(
+    adjustedDates
+      .map((date) => date.toISOString().split("T")[0])
+      .join(",")
+  );
 
-            selectedDatesDisplay.empty();
-            if (selectedDates.length > 0) {
-              selectedDates.forEach(function (date) {
-                selectedDatesDisplay.append(
-                  `<span>${date.toISOString().split("T")[0]}</span>, `
-                );
-              });
-            } else {
-              selectedDatesDisplay.text("No dates selected.");
-            }
-          },
+  selectedDatesDisplay.empty();
+  if (adjustedDates.length > 0) {
+    adjustedDates.forEach(function (date) {
+      selectedDatesDisplay.append(
+        `<span>${date.toISOString().split("T")[0]}</span>, `
+      );
+    });
+  } else {
+    selectedDatesDisplay.text("No dates selected.");
+  }
+}
+,
         });
 
         // Update categories based on allocation type
@@ -151,7 +157,7 @@
       <div class="ts-form-inline">
         <label for="datepicker">Select Dates:</label>
         <input type="text" id="datepicker" readonly />
-        <input type="hidden" id="dates" name="dates" value="" />
+        <input type="" id="dates" name="dates" value="" />
 
       <div class="ts-form-inline">
         <label for="duration_hours">Duration Hours:</label>
