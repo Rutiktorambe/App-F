@@ -4,80 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Repotree</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f2f5;
-        margin: 0;
-        padding: 20px;
-      }
-      h1,
-      h2 {
-        color: #333;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
-      th,
-      td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-      th {
-        background-color: #4caf50;
-        color: #fff;
-      }
-      tr:nth-child(even) {
-        background-color: #f9f9f9;
-      }
-      tr:hover {
-        background-color: #f1f1f1;
-      }
-      .edit-form input[type="text"] {
-        padding: 6px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        width: 150px;
-      }
-      .edit-form button {
-        padding: 6px 12px;
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      .edit-form button:hover {
-        background-color: #45a049;
-      }
-      .message {
-        margin-top: 20px;
-        padding: 10px;
-        border-radius: 4px;
-      }
-      .success {
-        background-color: #d4edda;
-        color: #155724;
-      }
-      .error {
-        background-color: #f8d7da;
-        color: #721c24;
-      }
-      .action-link {
-        color: #4caf50;
-        text-decoration: none;
-        cursor: pointer;
-      }
-    </style>
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/timesheet/view_repotree.css') }}"
+  />
+    
   </head>
   <body>
+
+
+    {% include 'navbar.html' %}
+    <div class="view-repotree-box">
+
+      <nav class="ts-nav-container">
+        <div class="ts-nav-center">
+          <a href="/timesheet_home" class="ts-nav-link">Timesheet</a>
+          <a href="/fill_timesheet" class="ts-nav-link">Fill Timesheet</a>
+           <a href="/view_summary" class="ts-nav-link">View Summery</a>
+        </div>
+      </nav>
     <h1>Manage Repotree</h1>
 
     {% if employees %}
@@ -149,5 +94,6 @@
     {% endif %} {% if project_code_updated %}
     <div class="message success">Project code updated successfully!</div>
     {% endif %}
+    </div>
   </body>
 </html>
