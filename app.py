@@ -166,7 +166,7 @@ def view_repotree():
         ).fetchone()
 
     conn.close()
-    return render_template('view_repotree.html', employees=repotree_employees, timesheets=timesheet_entries, edit_entry=edit_entry)
+    return render_template('view_repotree.html', employees=repotree_employees, timesheets=timesheet_entries, edit_entry=edit_entry, fname=current_user.fname, lname=current_user.lname)
 
 
 
@@ -186,7 +186,7 @@ def unauthorized():
 @app.route('/success')
 @login_required
 def success():
-    return render_template('success.html')  # Create a success.html template
+    return render_template('success.html',fname=current_user.fname, lname=current_user.lname)  # Create a success.html template
 
 
 @app.route('/view_summary', methods=['GET'])
@@ -238,7 +238,7 @@ def view_summary():
         flash("An error occurred while generating the summary.", 'error')
         return redirect(url_for('home'))
 
-    return render_template('view_summary.html', summary=summary, start_date=start_date.strftime('%Y-%m-%d'))
+    return render_template('view_summary.html', summary=summary, start_date=start_date.strftime('%Y-%m-%d'), fname=current_user.fname, lname=current_user.lname)
 
 
 
@@ -276,7 +276,7 @@ def view_entries_by_date(date):
         flash(f"An error occurred while fetching entries: {str(e)}", 'error')
         return redirect(url_for('view_summary'))
 
-    return render_template('view_entries_by_date.html', entries=entries, date=date)
+    return render_template('view_entries_by_date.html', entries=entries, date=date, fname=current_user.fname, lname=current_user.lname)
 
 
 
@@ -301,7 +301,7 @@ def edit_entry(entry_id):
         flash(f'Error fetching entry: {str(e)}', 'error')
         return redirect(url_for('view_summary'))
 
-    return render_template('edit_entry.html', entry=entry)
+    return render_template('edit_entry.html', entry=entry, fname=current_user.fname, lname=current_user.lname)
 
 # Route to handle updating the entry
 @app.route('/update_entry/<int:entry_id>', methods=['POST'])
