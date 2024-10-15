@@ -1,48 +1,30 @@
-# App-F
-pink 
- rgb(255, 0, 85);  
- blue
- rgb(1, 190, 248);
-
 '''password
 HYDRAxJonathan
 Latur@4255
 ````
 
-    --input-focus:rgb(255, 0, 85);;
-    --font-color: #323232;
-    --font-color-sub: #666;
-    --bg-color: #fff;
-    --main-color: #323232;
-    
-```html
-{% include 'navbar.html' %}
- ```
-
-
-
-```bash
 sqlite3 ems_users.db
-```
 
-```bash
 .tables
-```
 
-```bash
-.schema table_name
-```
+.schema EMS_users
 
-```bash
-SELECT \* FROM table_name;
-Export Data (Optional):
-```
+.schema timesheet_entries
 
-
-```bash
 .headers on
 .mode csv
-.output output_file.csv
-SELECT \* FROM table_name;
+.output EMS_users.csv
+SELECT * FROM EMS_users;
 .output stdout
-```
+.output timesheet_entries.csv
+SELECT * FROM timesheet_entries;
+.output stdout
+
+.mode csv
+.import EMS_users.csv EMS_users
+.import timesheet_entries.csv timesheet_entries
+
+SELECT * FROM EMS_users;
+SELECT * FROM timesheet_entries;
+
+.quit
