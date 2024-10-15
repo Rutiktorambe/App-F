@@ -1,3 +1,27 @@
-<html>
-  hello
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/home/success.css') }}"
+    />
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <div class="success-box">
+      <div class="success-heading">
+        <h1>Timesheet Successfully Submited</h1>
+      </div>
+      <nav class="ts-nav-container">
+        <div class="ts-nav-center">
+          <a href="/timesheet_home" class="ts-nav-link">Timesheet</a>
+          <a href="/view_summary" class="ts-nav-link">View Summery</a>
+          <a href="/fill_timesheet" class="ts-nav-link">Fill Timesheet</a>
+        </div>
+      </nav>
+    </div>
+  </body>
 </html>
