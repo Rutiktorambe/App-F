@@ -107,7 +107,6 @@ def fill_timesheet():
                     (employee_id, fname, lname, team, manager_name, date, duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments))
             conn.commit()
             conn.close()
-            flash('Timesheet submitted successfully!', 'success')
             return redirect(url_for('success'))  # Redirect to a success page
         except Exception as e:
             flash(f"Error occurred while submitting timesheet: {str(e)}", 'error')
@@ -133,7 +132,6 @@ def view_repotree():
         )
         conn.commit()
         conn.close()
-        flash('Project code updated successfully!', 'success')
 
         # Redirect to avoid resubmitting the form
         return redirect(url_for('view_repotree'))
@@ -147,7 +145,6 @@ def view_repotree():
 
     if not repotree_employees:
         conn.close()
-        flash('You do not manage any employees.', 'error')
         return redirect(url_for('home'))
 
     # Fetch timesheet entries for all managed employees
@@ -216,8 +213,6 @@ def view_summary():
         ).fetchall()
         conn.close()
 
-        print("Entries fetched:", entries)  # Debugging line
-
         # Process each entry
         for entry in entries:
             date = entry['date']
@@ -234,8 +229,6 @@ def view_summary():
             summary['totals']['total_time'] += total_time
 
     except Exception as e:
-        print("An error occurred:", str(e))
-        flash("An error occurred while generating the summary.", 'error')
         return redirect(url_for('home'))
 
     return render_template('view_summary.html', summary=summary, start_date=start_date.strftime('%Y-%m-%d'), fname=current_user.fname, lname=current_user.lname)
@@ -273,7 +266,6 @@ def view_entries_by_date(date):
         ).fetchall()
         conn.close()
     except Exception as e:
-        flash(f"An error occurred while fetching entries: {str(e)}", 'error')
         return redirect(url_for('view_summary'))
 
     return render_template('view_entries_by_date.html', entries=entries, date=date, fname=current_user.fname, lname=current_user.lname)
@@ -295,10 +287,8 @@ def edit_entry(entry_id):
         ).fetchone()
         conn.close()
         if not entry:
-            flash('Entry not found or unauthorized access.', 'error')
             return redirect(url_for('view_summary'))
     except Exception as e:
-        flash(f'Error fetching entry: {str(e)}', 'error')
         return redirect(url_for('view_summary'))
 
     return render_template('edit_entry.html', entry=entry, fname=current_user.fname, lname=current_user.lname)
@@ -328,7 +318,7 @@ def update_entry(entry_id):
         ''', (duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments, entry_id, current_user.id))
         conn.commit()
         conn.close()
-        flash('Entry updated successfully', 'success')
+      
     except Exception as e:
         flash(f'Error occurred while updating entry: {str(e)}', 'error')
 
