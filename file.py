@@ -60,3 +60,51 @@ CREATE TABLE IF NOT EXISTS timesheet_entries (
 # Commit the changes and close the connection
 conn.commit()
 conn.close()
+
+
+# CREATE TABLE IF NOT EXISTS timesheet_entries (
+#     entree_id INTEGER PRIMARY KEY AUTOINCREMENT,
+#     employee_id TEXT,
+#     fname TEXT,
+#     lname TEXT,
+#     team TEXT,
+#     manager_name TEXT,
+#     date TEXT,
+#     duration_hours INTEGER,
+#     duration_minutes INTEGER,
+#     billable_time REAL,
+#     nonbillable_admin_time REAL,
+#     nonbillable_training_time REAL,
+#     unavailable_time Real,
+#     total_time REAL,
+#     project_code TEXT,
+#     allocation_type TEXT,
+#     holiday_status TEXT,
+#     category_1 TEXT,
+#     category_2 TEXT,
+#     category_3 TEXT,
+#     comments TEXT
+# )
+
+
+    entree_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    employee_id TEXT,
+    fname TEXT,
+    lname TEXT,
+    team TEXT,
+    manager_name TEXT,
+    date TEXT,
+    duration_hours INTEGER,
+    duration_minutes INTEGER,
+    billable_time REAL,
+    nonbillable_admin_time REAL,
+    nonbillable_training_time REAL,
+    unavailable_time Real,
+    total_time REAL,
+    project_code TEXT,
+    allocation_type TEXT,
+    holiday_status TEXT,
+    category_1 TEXT,
+    category_2 TEXT,
+    category_3 TEXT,
+    comments TEXT
