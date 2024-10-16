@@ -62,7 +62,7 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    return render_template('home.html', fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername)
+    return render_template('home.html', id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername)
 
 # Route for Timesheet Home Page
 @app.route('/timesheet_home')

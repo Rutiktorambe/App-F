@@ -1,43 +1,54 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/home/home.css') }}"
     />
-</head>
-<body>
-  <div>
-    {% include 'navbar.html' %}
-  </div>
-<div class="home-box">
+  </head>
+  <body>
+    <div>{% include 'navbar.html' %}</div>
+    <div class="home-box">
+      <div class="home-banner">
+        <h2>Welcome, <span>{{ fname }} {{ lname }}</span></h2>
+        <p>
+          Role:
+          <span>
+            {{ role }}
+            <span style="color: black; font-size: larger">|</span></span
+          >
+          Team:
+          <span
+            >{{ team }}
+            <span style="color: black; font-size: larger">|</span></span
+          >
+          Manager:
+          <span>
+            {{ managername }}
+            <span style="color: black; font-size: larger">|</span></span
+          >
+          Employee id:
+          <span>{{ id }}</span>
+        </p>
+      </div>
 
-  <div class="home-banner">
-    <h2>Welcome,  <span>{{ fname }} {{ lname }}</span></h2>
-    <p>Role: <span> {{ role }} <span style="color: black; font-size: larger;">|</span></span> Team: <span>{{ team }}</span></p>
-  </div>
-  
-  <div class="home-services">
-    <h3>Available Services</h3>
-    <ul>
-      <a href="{{ url_for('timesheet_home') }}"><li>Timesheet</li></a>
-      <a href=""><li>Leave Management</li></a>
-      <a href=""><li>IT Helpdesk</li></a>
-      <a href=""><li>Finance Reports</li></a>
-      <a href=""><li>HR Portal</li></a>
-      <a href=""><li>Project Management</li></a>
-      <a href=""><li>Performance Reviews</li></a>
-      <a href=""><li>Training Portal</li></a>
-      <a href=""><li>Customer Support</li></a>
-    </ul>
-  </div>
-</div>
-</body>
+      <div class="home-services">
+        <h3>Available Services</h3>
+        <ul>
+          <a href="{{ url_for('timesheet_home') }}"><li>Timesheet</li></a>
+          <a href=""><li>Leave Management</li></a>
+          <a href=""><li>IT Helpdesk</li></a>
+          <a href=""><li>Finance Reports</li></a>
+          <a href=""><li>HR Portal</li></a>
+          <a href=""><li>Project Management</li></a>
+          <a href=""><li>Performance Reviews</li></a>
+          <a href=""><li>Training Portal</li></a>
+          <a href=""><li>Customer Support</li></a>
+        </ul>
+      </div>
+    </div>
+  </body>
 </html>
-
