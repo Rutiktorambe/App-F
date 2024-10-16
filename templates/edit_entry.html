@@ -1,13 +1,9 @@
-<!-- /templates/edit_entry.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Edit Entry</title>
-      <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/timesheet/edit_entry.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/timesheet/edit_entry.css') }}" />
     <script>
         // JavaScript to populate duration dropdowns on page load
         document.addEventListener('DOMContentLoaded', function () {
@@ -74,57 +70,65 @@
     </script>
 </head>
 <body>
-     {% include 'navbar.html' %}
+    {% include 'navbar.html' %}
     <div class="ts-edit-page">
-           
-  <nav class="ts-nav-container">
-        <div class="ts-nav-center">
-          <a href="/timesheet_home" class="ts-nav-link">Timesheet</a>
-          <a href="/fill_timesheet" class="ts-nav-link">Fill Timesheet</a>
-           <a href="/view_summary" class="ts-nav-link">View Summery</a>
-        <a class="ts-nav-link" href="{{ url_for('view_entries_by_date', date=entry.date) }}">Entries for {{ entry.date }}
-    </a>
-        </div>
-      </nav>
-    <h1 class="ts-edit-title">Edit Entry for {{ entry.date }}</h1>
-    <form class="ts-edit-form" action="{{ url_for('update_entry', entry_id=entry.entree_id) }}" method="post">
-        <div class="ts-edit-inline-field"> 
-            <label class="ts-edit-label" for="duration_hours">Duration (Hours):</label>
-            <select class="ts-edit-select" name="duration_hours" id="duration_hours" required>
+        <nav class="ts-nav-container">
+            <div class="ts-nav-center">
+                <a href="/timesheet_home" class="ts-nav-link">Timesheet</a>
+                <a href="/fill_timesheet" class="ts-nav-link">Fill Timesheet</a>
+                <a href="/view_summary" class="ts-nav-link">View Summary</a>
+                <a class="ts-nav-link" href="{{ url_for('view_entries_by_date', date=entry.date) }}">Entries for {{ entry.date }}</a>
+            </div>
+        </nav>
+        <h1 class="ts-edit-title">Edit Entry for {{ entry.date }}</h1>
+        <form class="ts-edit-form" action="{{ url_for('update_entry', entry_id=entry.entree_id) }}" method="post">
+            <div class="ts-edit-inline-field"> 
+                <label class="ts-edit-label" for="duration_hours">Duration (Hours):</label>
+                <select class="ts-edit-select" name="duration_hours" id="duration_hours" required>
                 </select>
 
-            <label class="ts-edit-label" for="duration_minutes">Duration (Minutes):</label>
-            <select class="ts-edit-select" name="duration_minutes" id="duration_minutes" required>
+                <label class="ts-edit-label" for="duration_minutes">Duration (Minutes):</label>
+                <select class="ts-edit-select" name="duration_minutes" id="duration_minutes" required>
                 </select>
-        </div>
+            </div>
 
-        <label class="ts-edit-label" for="allocation_type">Allocation Type:</label>
-        <select class="ts-edit-select" name="allocation_type" id="allocation_type" onchange="updateCategories()" required>
-            <option value="">Select Allocation Type</option>
-            <option value="Billable" {% if entry.allocation_type == 'Billable' %}selected{% endif %}>Billable</option>
-            <option value="Non-Billable" {% if entry.allocation_type == 'Non-Billable' %}selected{% endif %}>Non-Billable</option>
-        </select>
+            <label class="ts-edit-label" for="allocation_type">Allocation Type:</label>
+            <select class="ts-edit-select" name="allocation_type" id="allocation_type" onchange="updateCategories()" required>
+                <option value="">Select Allocation Type</option>
+                <option value="Billable" {% if entry['allocation_type'] == 'Billable' %}selected{% endif %}>Billable</option>
+                <option value="Non-Billable" {% if entry['allocation_type'] == 'Non-Billable' %}selected{% endif %}>Non-Billable</option>
+            </select>
 
-        <div class="ts-edit-inline-field">
-            <label class="ts-edit-label" for="category_1">Category 1:</label>
-            <select class="ts-edit-select" name="category_1" id="category_1" required>
+            <div class="ts-edit-inline-field">
+                <label class="ts-edit-label" for="category_1">Category 1:</label>
+                <select class="ts-edit-select" name="category_1" id="category_1" required>
+                    <option value="">Select Category 1</option>
+                    <option value="admin" {% if entry['category_1'] == 'admin' %}selected{% endif %}>Admin</option>
+                    <option value="Training" {% if entry['category_1'] == 'Training' %}selected{% endif %}>Training</option>
+                    <option value="Other" {% if entry['category_1'] == 'Other' %}selected{% endif %}>Other</option>
                 </select>
 
-            <label class="ts-edit-label" for="category_2">Category 2:</label>
-            <select class="ts-edit-select" name="category_2" id="category_2">
+                <label class="ts-edit-label" for="category_2">Category 2:</label>
+                <select class="ts-edit-select" name="category_2" id="category_2">
+                    <option value="" {% if entry['category_2'] == '' %}selected{% endif %}>Select Category 2</option>
+                    <option value="Cat B1" {% if entry['category_2'] == 'Cat B1' %}selected{% endif %}>Cat B1</option>
+                    <option value="Cat B2" {% if entry['category_2'] == 'Cat B2' %}selected{% endif %}>Cat B2</option>
                 </select>
 
-            <label class="ts-edit-label" for="category_3">Category 3:</label>
-            <select class="ts-edit-select" name="category_3" id="category_3">
+                <label class="ts-edit-label" for="category_3">Category 3:</label>
+                <select class="ts-edit-select" name="category_3" id="category_3">
+                    <option value="" {% if entry['category_3'] == '' %}selected{% endif %}>Select Category 3</option>
+                    <option value="Cat C1" {% if entry['category_3'] == 'Cat C1' %}selected{% endif %}>Cat C1</option>
+                    <option value="Cat C2" {% if entry['category_3'] == 'Cat C2' %}selected{% endif %}>Cat C2</option>
                 </select>
-        </div>
+            </div>
 
-        <label class="ts-edit-label" for="comments">Comments:</label>
-        <textarea class="ts-edit-textarea" name="comments">{{ entry.comments }}</textarea>
+            <label class="ts-edit-label" for="comments">Comments:</label>
+            <textarea class="ts-edit-textarea" name="comments">{{ entry.comments }}</textarea>
 
-        <input type="hidden" name="date" value="{{ entry.date }}">
-        <button class="ts-edit-button" type="submit">Save Changes</button>
-    </form>
+            <input type="hidden" name="date" value="{{ entry.date }}">
+            <button class="ts-edit-button" type="submit">Save Changes</button>
+        </form>
     </div>
 </body>
 </html>

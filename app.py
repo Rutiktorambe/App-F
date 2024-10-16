@@ -208,7 +208,7 @@ def unauthorized():
 @app.route('/success')
 @login_required
 def success():
-    return render_template('success.html',fname=current_user.fname, lname=current_user.lname)  # Create a success.html template
+    return render_template('success.html',fname=current_user.fname, lname=current_user.lname)  
 
 
 
@@ -232,7 +232,7 @@ def view_summary():
     # Initialize the summary dictionary
     summary = {
         "dates": {f"{(start_date + timedelta(days=i)).strftime('%Y-%m-%d')}": {
-            "day": (start_date + timedelta(days=i)).strftime('%a'),  # Day of the week (Mon, Tue, etc.)
+            "day": (start_date + timedelta(days=i)).strftime('%a'),  
             "billable": 0,
             "nonbillable_admin_time": 0,
             "nonbillable_training_time": 0,
@@ -348,10 +348,16 @@ def edit_entry(entry_id):
         conn.close()
         if not entry:
             return redirect(url_for('view_summary'))
+
+        # Convert to dictionary for easier debugging
+        entry_dict = dict(entry)
+        print(f"Entry data: {entry_dict}")  # Print as dictionary
     except Exception as e:
         return redirect(url_for('view_summary'))
 
     return render_template('edit_entry.html', entry=entry, fname=current_user.fname, lname=current_user.lname)
+
+
 
 # Route to handle updating the entry
 @app.route('/update_entry/<int:entry_id>', methods=['POST'])
