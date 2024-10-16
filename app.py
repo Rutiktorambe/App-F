@@ -98,21 +98,46 @@ def fill_timesheet():
         category_3 = request.form.get('category_3')
         comments = request.form['comments']
 
-    
+        # Initialize time tracking variables
+        billable_time = 0
+        nonbillable_admin_time = 0
+        nonbillable_training_time = 0
+        unavailable_time = 0
+        holiday_status = None
+
+        # Set the appropriate time based on allocation type
+        if allocation_type == 'billable':
+            billable_time = total_time
+        elif allocation_type == 'non-billable':
+            if category_1 == 'admin':
+                nonbillable_admin_time = total_time
+            elif category_1 == 'training':
+                nonbillable_training_time = total_time
+
         try:
-            conn = get_db_connection()
-            for date in selected_dates:
-                conn.execute('''INSERT INTO timesheet_entries (employee_id, fname, lname, team, manager_name, date, duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                    (employee_id, fname, lname, team, manager_name, date, duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments))
-            conn.commit()
-            conn.close()
+            # Use a context manager for database connection
+            with get_db_connection() as conn:
+                for date in selected_dates:
+                    conn.execute('''
+                        INSERT INTO timesheet_entries (
+                            employee_id, fname, lname, team, manager_name, date, duration_hours,
+                            duration_minutes, billable_time, nonbillable_admin_time, nonbillable_training_time,
+                            unavailable_time, total_time, allocation_type, category_1, category_2, category_3, comments
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ''', (
+                        employee_id, fname, lname, team, manager_name, date, duration_hours, duration_minutes,
+                        billable_time, nonbillable_admin_time, nonbillable_training_time, unavailable_time,
+                        total_time, allocation_type, category_1, category_2, category_3, comments
+                    ))
+                conn.commit()
             return redirect(url_for('success'))  # Redirect to a success page
         except Exception as e:
             flash(f"Error occurred while submitting timesheet: {str(e)}", 'error')
 
     # Render the form initially
-    return render_template('fill_timesheet.html', fname=current_user.fname,  lname=current_user.lname)
+    return render_template('fill_timesheet.html', fname=current_user.fname, lname=current_user.lname)
+
+
 
 @app.route('/view_repotree', methods=['GET', 'POST'])
 @login_required
