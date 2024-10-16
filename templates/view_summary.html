@@ -52,8 +52,8 @@
           <thead>
             <tr>
               <th class="ts-summary-header">Date</th>
-              <th class="ts-summary-header">Admin</th>
               <th class="ts-summary-header">Billable</th>
+              <th class="ts-summary-header">Admin</th>
               <th class="ts-summary-header">Training</th>
               <th class="ts-summary-header">Non-billable</th>
               <th class="ts-summary-header">Total Time</th>
@@ -72,17 +72,16 @@
                   {{ date }}
                 </a>
               </td>
-
-              <td class="ts-summary-data">{{ details.admin | default(0) }}</td>
               <td class="ts-summary-data">
-                {{ details.billable | default(0) }}
+                {{ details['billable'] | default(0) }}
               </td>
+              <td class="ts-summary-data">{{ details.admin | default(0) }}</td>
               <td class="ts-summary-data">
                 {{ details.training | default(0) }}
               </td>
               <td class="ts-summary-data">
                 {{ details['non-billable'] | default(0) + details.training |
-                default(0) }}
+                default(0) + details.admin | default(0)}}
               </td>
               <td class="ts-summary-data">
                 {{ details.total_time | default(0) }}
