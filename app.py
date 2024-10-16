@@ -211,21 +211,41 @@ def success():
     return render_template('success.html',fname=current_user.fname, lname=current_user.lname)  # Create a success.html template
 
 
+
+
+
+
+
+from datetime import datetime, timedelta
+
 @app.route('/view_summary', methods=['GET'])
 @login_required
 def view_summary():
     selected_date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
     current_date = datetime.strptime(selected_date, '%Y-%m-%d')
 
-    start_date = current_date - timedelta(days=current_date.weekday())
+    # Calculate the start and end dates for the week
+    weekday_index = current_date.weekday()
+    start_date = current_date - timedelta(days=weekday_index)
     end_date = start_date + timedelta(days=6)
 
+    # Initialize the summary dictionary
     summary = {
-        "dates": {f"{(start_date + timedelta(days=i)).strftime('%Y-%m-%d')}": {} for i in range(7)},
-        "totals": {
-            "admin": 0,
+        "dates": {f"{(start_date + timedelta(days=i)).strftime('%Y-%m-%d')}": {
+            "day": (start_date + timedelta(days=i)).strftime('%a'),  # Day of the week (Mon, Tue, etc.)
             "billable": 0,
+            "nonbillable_admin_time": 0,
+            "nonbillable_training_time": 0,
             "non-billable": 0,
+            "unavailable_time": 0,
+            "total_time": 0
+        } for i in range(7)},
+        "totals": {
+            "billable": 0,
+            "nonbillable_admin_time": 0,
+            "nonbillable_training_time": 0,
+            "non-billable": 0,
+            "unavailable_time": 0,
             "total_time": 0
         }
     }
@@ -233,7 +253,8 @@ def view_summary():
     try:
         conn = get_db_connection()
         entries = conn.execute(
-            'SELECT * FROM timesheet_entries WHERE date BETWEEN ? AND ? AND employee_id = ?',
+            '''SELECT * FROM timesheet_entries 
+               WHERE date BETWEEN ? AND ? AND employee_id = ?''',
             (start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'), current_user.id)
         ).fetchall()
         conn.close()
@@ -241,22 +262,36 @@ def view_summary():
         # Process each entry
         for entry in entries:
             date = entry['date']
-            allocation_type = entry['allocation_type']
+            billable_time = entry['billable_time']
+            nonbillable_admin_time = entry['nonbillable_admin_time']
+            nonbillable_training_time = entry['nonbillable_training_time']
+            unavailable_time = entry['unavailable_time']
             total_time = entry['total_time']
 
-            if allocation_type in ['admin', 'billable', 'non-billable']:
-                summary['dates'][date].setdefault(allocation_type, 0)
-                summary['dates'][date][allocation_type] += total_time
-                summary['totals'][allocation_type] += total_time
+            # Update the day's summary
+            day_summary = summary['dates'][date]
+            day_summary['billable'] += billable_time
+            day_summary['nonbillable_admin_time'] += nonbillable_admin_time
+            day_summary['nonbillable_training_time'] += nonbillable_training_time
+            day_summary['non-billable'] += nonbillable_admin_time + nonbillable_training_time
+            day_summary['unavailable_time'] += unavailable_time
+            day_summary['total_time'] += total_time
 
-            summary['dates'][date].setdefault('total_time', 0)
-            summary['dates'][date]['total_time'] += total_time
+            # Update the totals
+            summary['totals']['billable'] += billable_time
+            summary['totals']['nonbillable_admin_time'] += nonbillable_admin_time
+            summary['totals']['nonbillable_training_time'] += nonbillable_training_time
+            summary['totals']['non-billable'] += nonbillable_admin_time + nonbillable_training_time
+            summary['totals']['unavailable_time'] += unavailable_time
             summary['totals']['total_time'] += total_time
 
     except Exception as e:
+        flash(f"An error occurred while fetching the summary: {str(e)}", 'error')
         return redirect(url_for('home'))
 
+    # Render the template with the updated summary
     return render_template('view_summary.html', summary=summary, start_date=start_date.strftime('%Y-%m-%d'), fname=current_user.fname, lname=current_user.lname)
+
 
 
 
