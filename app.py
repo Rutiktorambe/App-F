@@ -20,13 +20,14 @@ def get_db_connection():
 
 # User class for Flask-Login
 class User(UserMixin):
-    def __init__(self, id, fname, lname, role, team, managername):
+    def __init__(self, id, fname, lname, role, team, managername,email):
         self.id = id
         self.fname = fname
         self.lname = lname
         self.role = role
         self.team = team
         self.managername =managername
+        self.email =email
 
 # Load user for Flask-Login
 @login_manager.user_loader
@@ -35,7 +36,7 @@ def load_user(user_id):
     user = conn.execute('SELECT * FROM EMS_users WHERE EmployeeID = ?', (user_id,)).fetchone()
     conn.close()
     if user:
-        return User(user['EmployeeID'], user['Fname'], user['Lname'], user['Role'], user['Team'] ,user['ManagerName'])
+        return User(user['EmployeeID'], user['Fname'], user['Lname'], user['Role'], user['Team'] ,user['ManagerName'],user['Email'])
     return None
 
 # Route for login
@@ -50,7 +51,7 @@ def login():
         conn.close()
         
         if user:
-            user_obj = User(user['EmployeeID'], user['Fname'], user['Lname'], user['Role'], user['Team'],user['ManagerName'])
+            user_obj = User(user['EmployeeID'], user['Fname'], user['Lname'], user['Role'], user['Team'],user['ManagerName'],user['Email'])
             login_user(user_obj)
             return redirect(url_for('home'))
         else:
@@ -62,7 +63,7 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    return render_template('home.html', id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername)
+    return render_template('home.html', id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername , email =current_user.email)
 
 # Route for Timesheet Home Page
 @app.route('/timesheet_home')

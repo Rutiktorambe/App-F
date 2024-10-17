@@ -2,44 +2,45 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
     <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/navbar/navbar.css') }}"
-  />
-</head>
-<body>
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/navbar/navbar.css') }}"
+    />
+  </head>
+  <body>
     <header id="navbar">
-        <nav class="navbar-container container">
-          <a href="/home" class="home-link">
-            <div class="navbar-logo">
-              <img
-                src="{{ url_for('static', filename='images/logo.png') }}"
-                alt="Logo"
-              />
-            </div>
-          </a>
-          <div class="navbar-links">
-            
-            <a class="navbar-link" href="/home">Home</a>
-            <a class="navbar-link" href="/logout">Logout</a>
-            <div class="navInfo">
-              <a class="navbar-link-name" href=""><span>{{ fname }} {{ lname }}</span></a>
-              <div class="navInfoCard">
-                <div class="card-info">Email:<span></span></div>
-                <div class="card-info">Employee id:<span>{{id}}</span></div>
-                <div class="card-info">Role:<span> {{ role }}</span></div>
-                <div class="card-info">Team:<span>{{ team }}</span></div>
-                <div class="card-info">Manager:<span>  {{ managername }}</span></div>
-                
+      <nav class="navbar-container container">
+        <a href="/home" class="home-link">
+          <div class="navbar-logo">
+            <img
+              src="{{ url_for('static', filename='images/logo.png') }}"
+              alt="Logo"
+            />
+          </div>
+        </a>
+        <div class="navbar-links">
+          <a class="navbar-link" href="/home">Home</a>
+          <a class="navbar-link" href="/logout">Logout</a>
+          <div class="navInfo">
+            <a class="navbar-link-name" href=""
+              ><span>{{ fname }} {{ lname }}</span></a
+            >
+            <div class="navInfoCard">
+              <div class="card-info">Email:<span>{{email}}</span></div>
+              <div class="card-info">Employee id:<span>{{id}}</span></div>
+              <div class="card-info">Role:<span> {{ role }}</span></div>
+              <div class="card-info">Team:<span>{{ team }}</span></div>
+              <div class="card-info">
+                Manager:<span> {{ managername }}</span>
               </div>
             </div>
           </div>
-        </nav>
-      </header>
-</body>
+        </div>
+      </nav>
+    </header>
+  </body>
 </html>
-
