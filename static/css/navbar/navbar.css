@@ -79,16 +79,40 @@
     padding: 5px 10px;
     border-radius: 15px;
   }
-  
-  /* Responsive Design */
+
+
+.navInfo{
+  color: black;
+
+}
+  .navInfoCard{
+    /* display: none; */
+    border: 1px solid black;
+    margin-top: 30px;
+    position: absolute;
+    top:30px;
+    width: 150px;
+    right: 0;
+    margin-right: 5px;
+    padding: 10px;
+    background-color: aliceblue;
+  }
+
+  .navInfo:hover{
+   
+   .navInfoCard{
+       display:block;
+    }
+  }
+
   @media screen and (max-width: 700px) {
     #navbar {
-      position: static; /* Change position for mobile view */
+      position: static; 
     }
   
     .navbar-links {
-      flex-direction: column; /* Stack links vertically */
-      gap: 10px; /* Spacing between links */
+      flex-direction: column; 
+      gap: 10px; 
     }
   }
 

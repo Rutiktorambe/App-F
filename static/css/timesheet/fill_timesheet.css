@@ -70,6 +70,7 @@ input {
   border-radius: 4px;
   box-sizing: border-box;
   min-width: 200px;
+  margin: 5px;
 }
 
 .selected-dates {
