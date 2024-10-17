@@ -1,5 +1,0 @@
-entree_id,employee_id,fname,lname,team,manager_name,date,duration_hours,duration_minutes,billable_time,nonbillable_admin_time,nonbillable_training_time,unavailable_time,total_time,project_code,allocation_type,holiday_status,category_1,category_2,category_3,comments
-1,102,Jane,Smith,Analytics,"Alice Smith",2024-10-15,8,10,8.17,0.0,0.0,0.0,8.17,,billable,,cat_b1,"","",""
-2,102,Jane,Smith,Analytics,"Alice Smith",2024-10-16,8,10,8.17,0.0,0.0,0.0,8.17,,billable,,cat_b1,"","",""
-3,102,Jane,Smith,Analytics,"Alice Smith",2024-10-09,2,20,0.0,2.33,0.0,0.0,2.33,,non-billable,,admin,"","",the
-4,102,Jane,Smith,Analytics,"Alice Smith",2024-10-08,2,20,0.0,2.33,0.0,0.0,2.33,,non-billable,,admin,"","",the

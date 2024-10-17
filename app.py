@@ -176,7 +176,7 @@ def view_repotree():
     employee_ids = [employee['EmployeeID'] for employee in repotree_employees]
     placeholders = ', '.join(['?'] * len(employee_ids))
     timesheet_entries = conn.execute(
-        f'SELECT * FROM timesheet_entries WHERE employee_id IN ({placeholders})',
+        f'SELECT * FROM timesheet_entries WHERE employee_id IN ({placeholders})  order by date DESC ',
         employee_ids
     ).fetchall()
 
