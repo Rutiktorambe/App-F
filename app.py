@@ -76,7 +76,7 @@ def timesheet_home():
     conn.close()
     
     # Render the timesheet home page with a flag for whether the user is a manager
-    return render_template('timesheet_home.html', fname=current_user.fname,  lname=current_user.lname,is_manager=bool(manager_of_anyone),id =current_user.id, role=current_user.role, team=current_user.team ,managername=current_user.managername)
+    return render_template('timesheet_home.html', fname=current_user.fname,  lname=current_user.lname,is_manager=bool(manager_of_anyone),id =current_user.id, role=current_user.role, team=current_user.team ,managername=current_user.managername , email =current_user.email)
 
 # Fill timesheet route
 @app.route('/fill_timesheet', methods=['GET', 'POST'])
@@ -136,7 +136,7 @@ def fill_timesheet():
             flash(f"Error occurred while submitting timesheet: {str(e)}", 'error')
 
     # Render the form initially
-    return render_template('fill_timesheet.html', id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername)
+    return render_template('fill_timesheet.html', id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername , email =current_user.email)
 
 
 
@@ -189,7 +189,7 @@ def view_repotree():
         ).fetchone()
 
     conn.close()
-    return render_template('view_repotree.html', employees=repotree_employees, timesheets=timesheet_entries, edit_entry=edit_entry, id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername)
+    return render_template('view_repotree.html', employees=repotree_employees, timesheets=timesheet_entries, edit_entry=edit_entry, id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername, email =current_user.email)
 
 # Route for logout
 @app.route('/logout')
@@ -207,7 +207,7 @@ def unauthorized():
 @app.route('/success')
 @login_required
 def success():
-    return render_template('success.html',id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername)
+    return render_template('success.html',id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername, email =current_user.email)
 
 
 
@@ -289,7 +289,7 @@ def view_summary():
         return redirect(url_for('home'))
 
     # Render the template with the updated summary
-    return render_template('view_summary.html', summary=summary, start_date=start_date.strftime('%Y-%m-%d'), id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername)
+    return render_template('view_summary.html', summary=summary, start_date=start_date.strftime('%Y-%m-%d'), id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername, email =current_user.email)
 
 
 
@@ -327,7 +327,7 @@ def view_entries_by_date(date):
     except Exception as e:
         return redirect(url_for('view_summary'))
 
-    return render_template('view_entries_by_date.html', entries=entries, date=date, id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername)
+    return render_template('view_entries_by_date.html', entries=entries, date=date, id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername, email =current_user.email)
 
 
 
@@ -354,7 +354,7 @@ def edit_entry(entry_id):
     except Exception as e:
         return redirect(url_for('view_summary'))
 
-    return render_template('edit_entry.html', entry=entry, id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername)
+    return render_template('edit_entry.html', entry=entry, id =current_user.id, fname=current_user.fname, lname=current_user.lname, role=current_user.role, team=current_user.team ,managername=current_user.managername, email =current_user.email)
 
 
 
@@ -410,4 +410,4 @@ def delete_entry(entry_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True,port=5001)
+    app.run(debug=True,port=5003)
