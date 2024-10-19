@@ -98,13 +98,15 @@ def fill_timesheet():
         category_2 = request.form.get('category_2')
         category_3 = request.form.get('category_3')
         comments = request.form['comments']
-
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:22]  # Truncate to 8 decimal places
+        # timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f') + "{:04d}".format(int(datetime.now().microsecond % 100000)) #10 places
         # Initialize time tracking variables
         billable_time = 0
         nonbillable_admin_time = 0
         nonbillable_training_time = 0
         unavailable_time = 0
         holiday_status = None
+        
 
         # Set the appropriate time based on allocation type
         if allocation_type == 'billable':
@@ -123,12 +125,12 @@ def fill_timesheet():
                         INSERT INTO timesheet_entries (
                             employee_id, fname, lname, team, manager_name, date, duration_hours,
                             duration_minutes, billable_time, nonbillable_admin_time, nonbillable_training_time,
-                            unavailable_time, total_time, allocation_type, category_1, category_2, category_3, comments
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            unavailable_time, total_time, allocation_type, category_1, category_2, category_3, comments ,entry_timestamp  
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
                     ''', (
                         employee_id, fname, lname, team, manager_name, date, duration_hours, duration_minutes,
                         billable_time, nonbillable_admin_time, nonbillable_training_time, unavailable_time,
-                        total_time, allocation_type, category_1, category_2, category_3, comments
+                        total_time, allocation_type, category_1, category_2, category_3, comments ,timestamp 
                     ))
                 conn.commit()
             return redirect(url_for('success'))  # Redirect to a success page
@@ -372,15 +374,16 @@ def update_entry(entry_id):
         category_2 = request.form.get('category_2', '')
         category_3 = request.form.get('category_3', '')
         comments = request.form.get('comments', '')
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:22] 
 
         # Update the database entry
         conn = get_db_connection()
         conn.execute('''
             UPDATE timesheet_entries
             SET duration_hours = ?, duration_minutes = ?, total_time = ?, 
-                allocation_type = ?, category_1 = ?, category_2 = ?, category_3 = ?, comments = ?
+                allocation_type = ?, category_1 = ?, category_2 = ?, category_3 = ?, comments = ? ,entry_timestamp = ?
             WHERE entree_id = ? AND employee_id = ?
-        ''', (duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments, entry_id, current_user.id))
+        ''', (duration_hours, duration_minutes, total_time, allocation_type, category_1, category_2, category_3, comments,timestamp, entry_id, current_user.id))
         conn.commit()
         conn.close()
       
