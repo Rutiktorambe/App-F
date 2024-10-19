@@ -151,12 +151,13 @@ def view_repotree():
     if request.method == 'POST':
         entry_id = request.form.get('entry_id')
         project_code = request.form.get('project_code')
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:22]  # Truncate to 8 decimal places
 
         # Update the project code in the database
         conn = get_db_connection()
         conn.execute(
-            'UPDATE timesheet_entries SET project_code = ? WHERE entree_id = ?',
-            (project_code, entry_id)
+            'UPDATE timesheet_entries SET project_code = ? , entry_timestamp = ? WHERE entree_id = ?',
+            (project_code,timestamp, entry_id)
         )
         conn.commit()
         conn.close()
